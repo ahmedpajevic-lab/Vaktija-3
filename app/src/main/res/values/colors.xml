@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="vaktija_bg_dark">#1E2227</color>
+    <color name="vaktija_surface_dark">#262B31</color>
+    <color name="vaktija_gold">#A59573</color>
+    <color name="vaktija_gold_bright">#C4B28A</color>
+    <color name="vaktija_text_primary">#F3F4F6</color>
+    <color name="vaktija_text_secondary">#8E95A0</color>
+    <color name="ediyanet_panel_bg">#C2C3C1</color>
+    <color name="ediyanet_text_black">#0E0E0E</color>
+    <color name="ediyanet_active_red">#D61A1A</color>
+</resources>

@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:gravity="center_vertical"
+    android:background="@drawable/bg_ediyanet_pill_card"
+    android:paddingStart="10dp"
+    android:paddingEnd="12dp"
+    android:paddingTop="8dp"
+    android:paddingBottom="8dp">
+
+    <!-- Left One UI 9 Squircle Icon (NO white box border around it) -->
+    <ImageView
+        android:id="@+id/iv_notif_left_icon"
+        android:layout_width="42dp"
+        android:layout_height="42dp"
+        android:scaleType="fitCenter"
+        android:src="@drawable/ic_vaktija_launcher"
+        android:contentDescription="Vaktija.ba ikonica" />
+
+    <!-- Right Block: Top row (Countdown + Chevron) & Bottom row (6 spaced prayer columns) -->
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:paddingStart="10dp">
+
+        <!-- Top Row: Countdown Headline on left + Chevron on top right (clear of Jacija) -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="3dp">
+
+            <TextView
+                android:id="@+id/tv_ediyanet_countdown"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:singleLine="true"
+                android:fontFamily="sans-serif"
+                android:textStyle="bold"
+                android:textSize="15sp"
+                android:textColor="#0C0C0C"
+                android:includeFontPadding="false"
+                android:text="Akšam za: 0h 42m 0s" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="⌄"
+                android:textSize="15sp"
+                android:textColor="#4A4A4A"
+                android:paddingStart="6dp"
+                android:includeFontPadding="false" />
+        </LinearLayout>
+
+        <!-- Bottom Row: 6 evenly spaced prayer columns (9.5sp bold names, 11sp times) -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="vertical" android:gravity="center_horizontal">
+                <TextView android:id="@+id/name_0" android:layout_width="wrap_content" android:layout_height="wrap_content" android:singleLine="true" android:fontFamily="sans-serif" android:textStyle="bold" android:textSize="9.5sp" android:textColor="#111111" android:includeFontPadding="false" android:text="Zora" />
+                <TextView android:id="@+id/time_0" android:layout_width="wrap_content" android:layout_height="wrap_content" android:singleLine="true" android:fontFamily="sans-serif-medium" android:textSize="11sp" android:textColor="#111111" android:includeFontPadding="false" android:text="04:46" />
+            </LinearLayout>
+
+            <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="vertical" android:gravity="center_horizontal">
+                <TextView android:id="@+id/name_1" android:layout_width="wrap_content" android:layout_height="wrap_content" android:singleLine="true" android:fontFamily="sans-serif" android:textStyle="bold" android:textSize="9.5sp" android:textColor="#111111" android:includeFontPadding="false" android:text="Izlazak" />
+                <TextView android:id="@+id/time_1" android:layout_width="wrap_content" android:layout_height="wrap_content" android:singleLine="true" android:fontFamily="sans-serif-medium" android:textSize="11sp" android:textColor="#111111" android:includeFontPadding="false" android:text="06:16" />
+            </LinearLayout>
+
+            <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="vertical" android:gravity="center_horizontal">
+                <TextView android:id="@+id/name_2" android:layout_width="wrap_content" android:layout_height="wrap_content" android:singleLine="true" android:fontFamily="sans-serif" android:textStyle="bold" android:textSize="9.5sp" android:textColor="#111111" android:includeFontPadding="false" android:text="Podne" />
+                <TextView android:id="@+id/time_2" android:layout_width="wrap_content" android:layout_height="wrap_content" android:singleLine="true" android:fontFamily="sans-serif-medium" android:textSize="11sp" android:textColor="#111111" android:includeFontPadding="false" android:text="11:30" />
+            </LinearLayout>
+
+            <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="vertical" android:gravity="center_horizontal">
+                <TextView android:id="@+id/name_3" android:layout_width="wrap_content" android:layout_height="wrap_content" android:singleLine="true" android:fontFamily="sans-serif" android:textStyle="bold" android:textSize="9.5sp" android:textColor="#111111" android:includeFontPadding="false" android:text="Ikindija" />
+                <TextView android:id="@+id/time_3" android:layout_width="wrap_content" android:layout_height="wrap_content" android:singleLine="true" android:fontFamily="sans-serif-medium" android:textSize="11sp" android:textColor="#111111" android:includeFontPadding="false" android:text="14:10" />
+            </LinearLayout>
+
+            <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="vertical" android:gravity="center_horizontal">
+                <TextView android:id="@+id/name_4" android:layout_width="wrap_content" android:layout_height="wrap_content" android:singleLine="true" android:fontFamily="sans-serif" android:textStyle="bold" android:textSize="9.5sp" android:textColor="#D81515" android:includeFontPadding="false" android:text="Akšam" />
+                <TextView android:id="@+id/time_4" android:layout_width="wrap_content" android:layout_height="wrap_content" android:singleLine="true" android:fontFamily="sans-serif" android:textStyle="bold" android:textSize="11sp" android:textColor="#D81515" android:includeFontPadding="false" android:text="16:40" />
+            </LinearLayout>
+
+            <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="vertical" android:gravity="center_horizontal">
+                <TextView android:id="@+id/name_5" android:layout_width="wrap_content" android:layout_height="wrap_content" android:singleLine="true" android:fontFamily="sans-serif" android:textStyle="bold" android:textSize="9.5sp" android:textColor="#111111" android:includeFontPadding="false" android:text="Jacija" />
+                <TextView android:id="@+id/time_5" android:layout_width="wrap_content" android:layout_height="wrap_content" android:singleLine="true" android:fontFamily="sans-serif-medium" android:textSize="11sp" android:textColor="#111111" android:includeFontPadding="false" android:text="18:01" />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

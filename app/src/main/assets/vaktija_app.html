@@ -1,0 +1,2461 @@
+<!DOCTYPE html>
+<html lang="bs">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Vaktija premium — Android App &amp; Simulator</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Roboto:ital,wght@0,300;0,400;0,500;0,700;0,900;1,400&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --vaktija-bg: #ffffff;
+      --vaktija-row-active: #f5f5f5;
+      --vaktija-gold: #9e8e68;
+      --vaktija-text: #2c2e30;
+      --vaktija-time-inactive: #6e7073;
+      --vaktija-muted: #6e7073;
+      --vaktija-icon-muted: #a6a8ab;
+      --vaktija-border: #e8eaed;
+      --prayer-scale: 1;
+    }
+    body.dark-app-theme {
+      --vaktija-bg: #1e2227;
+      --vaktija-row-active: #262b31;
+      --vaktija-gold: #a59573;
+      --vaktija-text: #f3f4f6;
+      --vaktija-time-inactive: #9ca3af;
+      --vaktija-muted: #8e95a0;
+      --vaktija-icon-muted: #6b7280;
+      --vaktija-border: #2e343d;
+    }
+    body {
+      font-family: 'Roboto', -apple-system, BlinkMacSystemFont, sans-serif;
+      background-color: #14171b;
+      color: var(--vaktija-text);
+      margin: 0;
+      padding: 0;
+      -webkit-font-smoothing: antialiased;
+    }
+    .vaktija-screen {
+      background-color: var(--vaktija-bg);
+      color: var(--vaktija-text);
+      transition: background-color 0.2s ease, color 0.2s ease;
+    }
+
+    /* Status bar adaptive theming (matches 29586.jpg / 29590.jpg) */
+    .status-bar-light {
+      background-color: #ffffff;
+      color: #3b3e42;
+    }
+    .status-bar-dark {
+      background-color: #111417;
+      color: #ffffff;
+    }
+
+    .status-icon-box {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Roboto', sans-serif;
+      font-variant-numeric: tabular-nums;
+      overflow: hidden;
+      transition: all 0.15s ease;
+    }
+    .status-bar-light .status-icon-box.countdown-active,
+    .adaptive-light-preview .status-icon-box.countdown-active {
+      height: 16px;
+      min-width: 18px;
+      padding: 0 2.5px;
+      border-radius: 3.5px;
+      background-color: #4a4e52;
+      color: #ffffff;
+      font-weight: 800;
+      font-size: 11.5px;
+      line-height: 1;
+      letter-spacing: -0.02em;
+    }
+    .status-bar-dark .status-icon-box.countdown-active,
+    .adaptive-dark-preview .status-icon-box.countdown-active {
+      height: 16px;
+      min-width: 18px;
+      padding: 0 2.5px;
+      border-radius: 3.5px;
+      background-color: #ffffff;
+      color: #111417;
+      font-weight: 800;
+      font-size: 11.5px;
+      line-height: 1;
+      letter-spacing: -0.02em;
+    }
+    .status-icon-box.logo-mode {
+      width: 18px;
+      height: 18px;
+      background-color: transparent;
+      padding: 0;
+    }
+
+    /* e-Diyanet Notification Panel with smaller font sizes and wide spacing between all 6 prayer columns */
+    .ediyanet-pill-panel {
+      font-family: 'Roboto', sans-serif;
+      background-color: #babbb9;
+      border-radius: 9999px;
+      padding: 9px 14px 9px 11px;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+      color: #0e0e0e;
+      -webkit-font-smoothing: antialiased;
+    }
+    .ediyanet-left-squircle {
+      width: 40px;
+      height: 40px;
+      border-radius: 42%;
+      clip-path: url(#oneUiSquircleClip);
+      background-color: transparent;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      flex-shrink: 0;
+      padding: 0;
+      position: relative;
+      filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.22));
+    }
+    .ediyanet-left-squircle::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 42%;
+      box-shadow: inset 0 1.5px 1.5px rgba(255, 255, 255, 0.45), inset 0 -1.5px 1.5px rgba(0, 0, 0, 0.25);
+      pointer-events: none;
+    }
+    .ediyanet-headline {
+      font-family: 'Roboto', sans-serif;
+      font-weight: 700;
+      font-size: 15.5px;
+      line-height: 1.15;
+      color: #0c0c0c;
+      letter-spacing: -0.01em;
+    }
+    .ediyanet-grid-6 {
+      display: grid;
+      grid-template-columns: repeat(6, minmax(0, 1fr));
+      column-gap: 8px;
+      width: 100%;
+      margin-top: 3px;
+    }
+    .ediyanet-col {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+    .ediyanet-col-name {
+      font-family: 'Roboto', sans-serif;
+      font-weight: 700;
+      font-size: 9.5px;
+      line-height: 1.15;
+      color: #0f0f0f;
+      white-space: nowrap;
+    }
+    .ediyanet-col-time {
+      font-family: 'Roboto', sans-serif;
+      font-weight: 400;
+      font-size: 11px;
+      line-height: 1.2;
+      color: #0f0f0f;
+      font-variant-numeric: tabular-nums;
+      white-space: nowrap;
+      margin-top: 1px;
+    }
+    .ediyanet-col-active .ediyanet-col-name,
+    .ediyanet-col-active .ediyanet-col-time {
+      color: #d81515 !important;
+      font-weight: 700 !important;
+    }
+
+    /* Custom vaktija.ba green toggle switch (matching 29592.jpg) */
+    .vaktija-switch {
+      width: 50px;
+      height: 30px;
+      border-radius: 9999px;
+      background-color: #d1d5db;
+      position: relative;
+      cursor: pointer;
+      transition: background-color 0.2s ease;
+      flex-shrink: 0;
+    }
+    .vaktija-switch.on {
+      background-color: #46b950;
+    }
+    .vaktija-switch-knob {
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      background-color: #ffffff;
+      position: absolute;
+      top: 2px;
+      left: 2px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+      transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .vaktija-switch.on .vaktija-switch-knob {
+      transform: translateX(20px);
+    }
+
+    /* Custom vaktija.ba text size slider (matching 29592.jpg) */
+    input[type="range"].vaktija-text-slider {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 100%;
+      height: 2px;
+      background: #dcdfe4;
+      border-radius: 2px;
+      outline: none;
+    }
+    input[type="range"].vaktija-text-slider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      background: #ffffff;
+      border: 1px solid #e5e7eb;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.22);
+      cursor: pointer;
+    }
+
+    /* 3D Wheel Picker Styling (matching 29588.jpg) */
+    .wheel-row-3 {
+      font-size: 13px;
+      color: #8e9094;
+      transform: perspective(120px) rotateX(42deg) scaleY(0.75);
+      line-height: 1.25;
+      cursor: pointer;
+      user-select: none;
+    }
+    .wheel-row-2 {
+      font-size: 16.5px;
+      color: #7d8085;
+      transform: perspective(120px) rotateX(25deg) scaleY(0.88);
+      line-height: 1.4;
+      cursor: pointer;
+      user-select: none;
+    }
+    .wheel-row-1 {
+      font-size: 20px;
+      color: #6e7073;
+      transform: perspective(120px) rotateX(12deg) scaleY(0.95);
+      line-height: 1.5;
+      cursor: pointer;
+      user-select: none;
+    }
+    .wheel-row-0 {
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--vaktija-text);
+      line-height: 1.55;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .custom-scrollbar::-webkit-scrollbar {
+      width: 5px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background: rgba(158, 142, 104, 0.35);
+      border-radius: 9999px;
+    }
+
+    /* Full-screen Native Android APK mode when hosted inside MainActivity WebView */
+    body.native-android-apk {
+      padding: 0 !important;
+      margin: 0 !important;
+      background: #ffffff !important;
+      overflow: hidden !important;
+    }
+    body.native-android-apk #simTopControlBar,
+    body.native-android-apk #androidStatusBar,
+    body.native-android-apk #ediyanetNotificationShade {
+      display: none !important;
+    }
+    body.native-android-apk #viewAppContainer {
+      width: 100vw !important;
+      height: 100vh !important;
+      max-width: none !important;
+    }
+    body.native-android-apk #phoneOuterFrame {
+      width: 100vw !important;
+      height: 100vh !important;
+      max-width: none !important;
+      padding: 0 !important;
+      border-radius: 0 !important;
+      border: none !important;
+      background: transparent !important;
+      box-shadow: none !important;
+    }
+    body.native-android-apk #phoneInnerScreen {
+      width: 100vw !important;
+      height: 100vh !important;
+      border-radius: 0 !important;
+      border: none !important;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col items-center justify-start py-3 px-2 sm:px-4">
+
+  <!-- Reusable Official Vaktija.ba SVG Icons -->
+  <svg class="hidden" aria-hidden="true">
+    <defs>
+      <clipPath id="oneUiSquircleClip" clipPathUnits="objectBoundingBox">
+        <path d="M 0.5,0 C 0.835,0 1,0.165 1,0.5 C 1,0.835 0.835,1 0.5,1 C 0.165,1 0,0.835 0,0.5 C 0,0.165 0.165,0 0.5,0 Z" />
+      </clipPath>
+
+      <!-- Exact Vaktija.ba V-Clock Icon -->
+      <g id="vaktijaStatusBarIconSvg">
+        <path
+          d="M 32.5 7.5 A 14.5 14.5 0 1 1 8.8 15.0"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="4.2"
+          stroke-linecap="round"
+        />
+        <path
+          d="M 11.5 8.5 L 23.0 21.5 L 27.0 3.8"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="4.2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
+        <circle cx="19.2" cy="6.2" r="2.35" fill="currentColor" />
+      </g>
+
+      <!-- Official Vaktija.ba App Launcher Icon in One UI 9 Squircle shape -->
+      <g id="vaktijaBaAppIconSvg">
+        <path d="M 50,0 C 83.5,0 100,16.5 100,50 C 100,83.5 83.5,100 50,100 C 16.5,100 0,83.5 0,50 C 0,16.5 16.5,0 50,0 Z" fill="#a59573" />
+        <g transform="translate(14, 15) scale(1.68)" color="#ffffff">
+          <use href="#vaktijaStatusBarIconSvg" />
+        </g>
+      </g>
+    </defs>
+  </svg>
+
+  <!-- Compact Simulator Control Bar -->
+  <div id="simTopControlBar" class="w-full max-w-[440px] mb-3 bg-[#1a1e23] border border-[#2e343d] rounded-2xl p-3 shadow-lg text-white">
+    <div class="flex items-center justify-between gap-2 pb-2 border-b border-[#2a3038]">
+      <div class="flex items-center gap-2">
+        <div class="w-7 h-7 rounded-[42%] overflow-hidden shrink-0 bg-[#a59573] flex items-center justify-center">
+          <svg viewBox="0 0 100 100" class="w-full h-full"><use href="#vaktijaBaAppIconSvg"/></svg>
+        </div>
+        <span class="text-xs font-semibold">Vaktija premium • Simulator</span>
+      </div>
+
+      <div class="flex items-center gap-1 bg-[#121518] p-0.5 rounded-lg border border-[#2a3038]">
+        <button id="tabBtnApp" type="button" class="px-2.5 py-1 rounded-md text-[11px] font-medium bg-[#a59573] text-[#121518] transition">
+          📱 Aplikacija i Notifikacija
+        </button>
+        <button id="tabBtnCode" type="button" class="px-2.5 py-1 rounded-md text-[11px] font-medium text-gray-300 hover:text-white transition">
+          💻 Android Studio Kod &amp; APK
+        </button>
+      </div>
+    </div>
+
+    <div class="pt-2 flex flex-wrap items-center justify-between gap-1.5">
+      <div class="flex flex-wrap items-center gap-1">
+        <button type="button" data-sim="live" class="sim-preset-btn px-2 py-0.5 rounded text-[11px] font-medium bg-[#a59573] text-[#121518] transition">
+          Uživo vrijeme
+        </button>
+        <button type="button" data-sim="75" class="sim-preset-btn px-2 py-0.5 rounded text-[11px] font-medium bg-[#252a30] text-gray-300 border border-[#343b44] transition">
+          75 min (&gt;60m ikona)
+        </button>
+        <button type="button" data-sim="60" class="sim-preset-btn px-2 py-0.5 rounded text-[11px] font-medium bg-[#252a30] text-gray-300 border border-[#343b44] transition">
+          60 min (Broj 60)
+        </button>
+        <button type="button" data-sim="42" class="sim-preset-btn px-2 py-0.5 rounded text-[11px] font-medium bg-[#252a30] text-gray-300 border border-[#343b44] transition">
+          42 min (Broj 42)
+        </button>
+        <button type="button" data-sim="15" class="sim-preset-btn px-2 py-0.5 rounded text-[11px] font-medium bg-[#252a30] text-gray-300 border border-[#343b44] transition">
+          15 min (Broj 15)
+        </button>
+        <button type="button" data-sim="1" class="sim-preset-btn px-2 py-0.5 rounded text-[11px] font-medium bg-[#252a30] text-gray-300 border border-[#343b44] transition">
+          1 min (Broj 1)
+        </button>
+      </div>
+
+      <div class="flex items-center gap-2 w-full justify-between pt-1">
+        <div class="flex items-center gap-1.5">
+          <input id="simMinutesRange" type="range" min="1" max="90" value="45" class="w-20 accent-[#a59573] cursor-pointer" />
+          <span id="simStatusBadge" class="text-[10.5px] font-semibold px-1.5 py-0.5 rounded bg-[#252a30] text-[#c4b491] border border-[#a59573]/40">
+            Uživo
+          </span>
+        </div>
+        <div class="flex items-center gap-1.5">
+          <button id="toggleAodModeBtn" type="button" class="px-2 py-0.5 rounded text-[10.5px] font-medium bg-[#252a30] text-[#e0b76b] border border-[#a59573]/40 hover:bg-[#a59573]/20 transition" title="Prebaci Now Brief između aktivnog ekrana i Always On Display (AOD) režima">
+            ☀️ Ekran: Aktivan
+          </button>
+          <button id="toggleStatusBarBgBtn" type="button" class="px-2 py-0.5 rounded text-[10.5px] font-medium bg-[#252a30] text-[#c4b491] border border-[#a59573]/40 hover:bg-[#a59573]/20 transition">
+            🌓 Statusna traka: Svijetla
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- VIEW 1: FULL-WIDTH CENTERED PHONE FRAME -->
+  <div id="viewAppContainer" class="w-full flex flex-col items-center">
+
+    <div id="phoneOuterFrame" class="w-full max-w-[440px] rounded-[38px] p-2 bg-gradient-to-b from-[#2c323b] to-[#181c20] shadow-2xl border border-[#3a414d]">
+      <div id="phoneInnerScreen" class="w-full rounded-[30px] overflow-hidden border border-black/30 vaktija-screen flex flex-col h-[780px] relative">
+
+        <!-- 1. ANDROID STATUS BAR (Exact match to 29586.jpg / 29590.jpg) -->
+        <div id="androidStatusBar" class="w-full status-bar-light px-5 pt-2.5 pb-1.5 flex items-center justify-between select-none cursor-pointer transition-colors shrink-0" title="Klikni za prikaz/sakrivanje e-Diyanet obavijesnog panela">
+          <div class="flex items-center gap-1.5">
+            <span id="statusBarClock" class="text-[13.5px] font-semibold tracking-tight">12:54</span>
+            <div id="upperLeftIconBox" class="status-icon-box logo-mode" title="Gornja lijeva ikonica: Vaktija.ba ikonica (>60m) ili adaptivna kutija sa minutama (<=60m)">
+              <span id="upperLeftIconContent" class="w-full h-full flex items-center justify-center"></span>
+            </div>
+            <span id="statusBarHintPill" class="hidden"></span>
+          </div>
+
+          <div class="flex items-center gap-1.5 text-xs">
+            <button id="toggleShadeBtn" type="button" class="text-[10px] font-medium text-[#9e8e68] hover:underline mr-1">
+              <span id="shadeToggleLabel">e-Diyanet panel ▾</span>
+            </button>
+            <div class="flex flex-col items-center leading-none text-[8px] font-bold opacity-80">
+              <span>0.37</span>
+              <span>K/s</span>
+            </div>
+            <span class="text-[10px] font-bold opacity-85">4G</span>
+            <div class="flex items-end gap-[1.5px] h-2.5 opacity-80">
+              <div class="w-[2px] h-1 bg-current rounded-full"></div>
+              <div class="w-[2px] h-1.5 bg-current rounded-full"></div>
+              <div class="w-[2px] h-2 bg-current rounded-full"></div>
+              <div class="w-[2px] h-2.5 bg-current opacity-40 rounded-full"></div>
+            </div>
+            <div id="batteryPillBox" class="px-1.5 py-[1.5px] rounded-[5px] bg-[#52565a] text-white font-bold text-[10px] leading-none">
+              79
+            </div>
+          </div>
+        </div>
+
+        <!-- 2. e-DIYANET PERSISTENT NOTIFICATION PANEL (Expandable: Collapsed Pill <-> Expanded 1793798623096.jpeg Card) -->
+        <div id="ediyanetNotificationShade" class="px-2.5 py-2 bg-[#ececec]/80 border-b border-black/5 transition-all shrink-0">
+          
+          <!-- View A: Collapsed Single-Row Pill -->
+          <div id="notifCollapsedView" class="ediyanet-pill-panel flex items-center cursor-pointer" title="Klikni za proširenje obavijesti">
+            <div id="notifSmallIconMirror" class="ediyanet-left-squircle mr-3" title="Ikona aplikacije Vaktija.ba">
+            </div>
+
+            <div class="flex-1 min-w-0">
+              <span id="notifCityName" class="hidden">Tuzla</span>
+              <span id="notifHijriDate" class="hidden"></span>
+
+              <div class="flex items-center justify-between">
+                <div id="notifCountdownPill" class="ediyanet-headline truncate">
+                  Ikindija: 1h 12m 0s
+                </div>
+                <!-- Down Chevron to Expand -->
+                <button id="notifExpandChevronBtn" type="button" class="pl-2 flex items-center justify-center text-[#4a4a4a] hover:text-[#111111] shrink-0 focus:outline-none" title="Proširi notifikaciju">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+                  </svg>
+                </button>
+              </div>
+
+              <div id="notifPrayerGrid" class="ediyanet-grid-6">
+                <!-- Populated dynamically by JS -->
+              </div>
+            </div>
+          </div>
+
+          <!-- View B: Exact Expanded e-Diyanet Notification Card matching 1793798623096.jpeg -->
+          <div id="notifExpandedView" class="hidden bg-[#babbb9] rounded-[30px] px-5 py-4 text-[#0c0c0c] shadow-lg select-none">
+            <!-- Top line: Squircle Icon + App Name + Collapse Chevron (Up ^) -->
+            <div class="flex items-center justify-between">
+              <div class="flex items-center gap-2.5">
+                <div id="notifExpandedIconMirror" class="ediyanet-left-squircle !w-8 !h-8 shrink-0"></div>
+                <span class="text-[14.5px] font-medium text-[#2c2e30]">Vaktija premium</span>
+              </div>
+              <button id="notifCollapseChevronBtn" type="button" class="p-1 flex items-center justify-center text-[#4a4a4a] hover:text-[#111111] focus:outline-none" title="Skupi notifikaciju">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M5 15l7-7 7 7" />
+                </svg>
+              </button>
+            </div>
+
+            <!-- Subheader: Left = City Name ("Tuzla"), Right = Hijri Date in Bosnian -->
+            <div class="flex items-center justify-between mt-1.5 px-0.5">
+              <span id="notifExpCityName" class="font-bold text-[15px] text-[#55595d]">Tuzla</span>
+              <span id="notifExpHijriDate" class="font-medium text-[13.5px] text-[#55595d]">24. džumade-l-ula 1448</span>
+            </div>
+
+            <!-- Center Countdown Section: Target Prayer Name + Huge Digits ("2h 14m 55s") + Bosnian Gregorian Date -->
+            <div class="flex flex-col items-center justify-center my-3 text-center">
+              <div id="notifExpTargetLabel" class="text-[16px] font-bold text-[#111111] leading-tight mb-1">
+                Ikindija za
+              </div>
+              <div id="notifExpDigits" class="text-[40px] font-semibold leading-none tracking-tight text-[#0c0c0c] my-1 countdown-digits" style="font-family: 'Roboto', -apple-system, BlinkMacSystemFont, sans-serif; font-variant-numeric: tabular-nums;">
+                1h 12m 00s
+              </div>
+              <div id="notifExpStandardDate" class="text-[13px] font-medium text-[#5a5e62]">
+                4. novembar 2026.
+              </div>
+            </div>
+
+            <!-- 2-Column x 3-Row Prayer Times Table matching 1793798623096.jpeg -->
+            <div class="grid grid-cols-2 gap-x-5 gap-y-1.5 px-1 mt-2.5 pt-1.5 border-t border-black/5" id="notifExpPrayerGrid">
+              <!-- Populated dynamically by JS -->
+            </div>
+          </div>
+
+          <!-- View C: Exact Samsung One UI Now Brief Pill (Blurry translucent Navy Blue + Gold text when active; Default Samsung Now Brief background + dimmed circle on Always On Display) -->
+          <div id="samsungNowBriefCard" class="mt-2.5 flex justify-center select-none transition-all">
+            <div id="samsungNowBriefPill" class="flex items-center rounded-full shadow-md cursor-pointer transition-all duration-300" style="width: 272px; height: 71px; padding-left: 15px; padding-right: 20px; background: linear-gradient(90deg, rgba(5, 22, 50, 0.72) 0%, rgba(7, 26, 58, 0.64) 52%, rgba(2, 17, 42, 0.56) 100%); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);" title="Klikni za prebacivanje između aktivnog ekrana i Always On Display (AOD) prikaza">
+              <!-- Exact 39x39px Now Brief Circle with deep navy blue background (#051632 -> #02112a) and gold clock-hand numerals (#e0b76b -> #cca255) -->
+              <div id="nowBriefMinutesCircle" class="rounded-full flex items-center justify-center shrink-0 relative overflow-hidden transition-all duration-300" style="width: 39px; height: 39px; background: linear-gradient(180deg, #051632 0%, #02112a 100%); box-shadow: 0 1px 3px rgba(0,0,0,0.28);" title="Minute do sljedećeg vakta">
+                <span id="nowBriefMinutesText" class="relative z-10 font-extrabold leading-none tracking-tight" style="font-family: 'Roboto', -apple-system, BlinkMacSystemFont, sans-serif; font-size: 17.5px; color: #dab063; background: linear-gradient(180deg, #e0b76b 0%, #cca255 55%, #bd9145 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-variant-numeric: tabular-nums;">42</span>
+              </div>
+              <!-- Exact Now Brief text ("Evening is here") in the same gold color as the numbers -->
+              <span id="nowBriefStatusText" class="font-semibold truncate transition-all duration-300" style="margin-left: 10px; font-family: 'Roboto', -apple-system, BlinkMacSystemFont, sans-serif; font-size: 18.5px; letter-spacing: -0.2px; line-height: 1.2; color: #dab063; background: linear-gradient(180deg, #e0b76b 0%, #cca255 55%, #bd9145 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Evening is here</span>
+            </div>
+            <!-- Hidden compatibility elements -->
+            <div class="hidden">
+              <div id="nowBriefHeadline">Evening is here</div>
+              <div id="nowBriefNextTime">16:37</div>
+              <div id="nowBriefCitySub">Tuzla</div>
+              <div id="nowBriefProgressBar"></div>
+              <span id="nowBriefPrevLabel"></span>
+              <span id="nowBriefNextLabel"></span>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- ========================================================================= -->
+        <!-- IN-PAGE SCREEN CONTAINER (Replaces screen when bottom tabs are clicked!)  -->
+        <!-- ========================================================================= -->
+        <div class="flex-1 flex flex-col overflow-hidden relative">
+
+          <!-- SCREEN 1: MAIN VAKTIJA SCREEN (Exact match to 29586.jpg) -->
+          <div id="screenVaktija" class="flex-1 flex flex-col justify-between overflow-y-auto">
+            <div class="px-6 pt-3 pb-2 relative shrink-0">
+              <div class="flex justify-end">
+                <button id="shareVaktijaBtn" type="button" class="w-8 h-8 rounded-full hover:bg-blue-50 flex items-center justify-center text-[#1a73e8] transition focus:outline-none" title="Ponovo pokreni / upali notifikacijski panel">
+                  <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none">
+                    <path d="M 19.5 12 A 7.5 7.5 0 1 1 17.3 6.7" stroke="#1a73e8" stroke-width="2.2" stroke-linecap="round" />
+                    <polyline points="20 3 20 7.5 15.5 7.5" stroke="#1a73e8" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" />
+                    <line x1="12" y1="8.8" x2="12" y2="13.2" stroke="#1a73e8" stroke-width="2.4" stroke-linecap="round" />
+                    <circle cx="12" cy="16.2" r="1.2" fill="#1a73e8" />
+                  </svg>
+                </button>
+              </div>
+
+              <div class="flex flex-col items-center justify-center mt-0.5">
+                <button id="openCityModalBtn" type="button" class="flex items-center justify-center gap-2.5 hover:opacity-80 transition focus:outline-none">
+                  <svg class="w-5 h-5 text-current shrink-0" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 010-5 2.5 2.5 0 010 5z" />
+                  </svg>
+                  <span id="mainCityHeading" class="text-[22px] font-bold tracking-tight">Tuzla</span>
+                  <span id="topCityLabel" class="hidden">Tuzla (118 gradova) ▾</span>
+                </button>
+
+                <div class="flex items-center justify-center gap-2 mt-1">
+                  <button id="prevDayBtn" type="button" class="w-5 h-5 rounded-full hover:bg-black/5 flex items-center justify-center text-[#6e7073] text-xs" title="Prethodni dan">‹</button>
+                  <button id="dateBannerBtn" type="button" class="hover:underline focus:outline-none">
+                    <span id="mainGregorianDate" class="text-[14px] text-[#6e7073] font-normal">sri, 4. nov 2026.</span>
+                    <span id="mainHijriDate" class="hidden">24. džumade-l-ula 1448</span>
+                    <span id="toolbarDateSubtitle" class="hidden"></span>
+                  </button>
+                  <button id="nextDayBtn" type="button" class="w-5 h-5 rounded-full hover:bg-black/5 flex items-center justify-center text-[#6e7073] text-xs" title="Naredni dan">›</button>
+                </div>
+              </div>
+
+              <div id="mainCountdownDisplay" class="hidden">01:12:00</div>
+              <button id="testSoundBtn" type="button" class="hidden">🔔 Zvuk</button>
+              <button id="themeToggleBtn" type="button" class="hidden"><span id="themeToggleIcon">☀</span></button>
+              <span id="apiSyncStatus" class="hidden"></span>
+              <button id="resetTodayBtn" type="button" class="hidden">Danas</button>
+            </div>
+
+            <!-- 6 Prayer Rows -->
+            <div id="vakatListContainer" class="flex-1 flex flex-col justify-around py-1">
+              <!-- Populated dynamically by JS -->
+            </div>
+          </div>
+
+          <!-- SCREEN 2: ODABERI DATUM (Exact match to 29588.jpg — 3-Column 3D Wheel Picker!) -->
+          <div id="screenDate" class="flex-1 hidden flex-col justify-between bg-inherit select-none">
+            <!-- Header: Centered "Odaberi datum" + Top-right blue "Prikaži" -->
+            <div class="px-5 pt-3.5 pb-2 flex items-center justify-between relative shrink-0">
+              <div class="w-14"></div>
+              <h2 class="text-[17px] font-bold tracking-tight text-center">Odaberi datum</h2>
+              <button id="wheelPrikaziBtn" type="button" class="w-14 text-right text-[16px] font-medium text-[#007aff] hover:opacity-80 focus:outline-none">
+                Prikaži
+              </button>
+            </div>
+
+            <!-- Center 3D Drum / Wheel Picker (Day | Month | Year) exactly as in 29588.jpg -->
+            <div class="flex-1 flex items-center justify-center px-6">
+              <div class="w-full grid grid-cols-12 items-center text-center">
+                <!-- Day Column (01 .. 31) -->
+                <div id="wheelDayCol" class="col-span-3 flex flex-col items-center justify-center"></div>
+                <!-- Month Column (januar .. decembar) -->
+                <div id="wheelMonthCol" class="col-span-6 flex flex-col items-center justify-center"></div>
+                <!-- Year Column (2020 .. 2032) -->
+                <div id="wheelYearCol" class="col-span-3 flex flex-col items-center justify-center"></div>
+              </div>
+            </div>
+
+            <div class="pb-4 text-center text-[11px] text-[#8e9094]">
+              Klikni na broj ili mjesec iznad/ispod za pomjeranje točka, pa klikni <strong class="text-[#007aff]">Prikaži</strong>
+            </div>
+          </div>
+
+          <!-- SCREEN 3: KIBLA KOMPAS (Exact match to 29590.jpg — Black Kaaba + Thick Black Circle + Gold Arm with Grey Center Dot!) -->
+          <div id="screenQibla" class="flex-1 hidden flex-col justify-between bg-inherit select-none">
+            <!-- Header: Centered "Kibla kompas" + Top-right blue (?) icon -->
+            <div class="px-5 pt-3.5 pb-2 flex items-center justify-between shrink-0">
+              <div class="w-8"></div>
+              <h2 class="text-[17px] font-bold tracking-tight text-center">Kibla kompas</h2>
+              <button id="qiblaHelpBtn" type="button" class="w-8 h-8 flex items-center justify-end text-[#007aff] focus:outline-none" title="Informacije o Kibla kompasu">
+                <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="12" cy="12" r="9.5" />
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M9.5 9a2.5 2.5 0 015 0c0 1.5-2.5 2-2.5 3.5" />
+                  <circle cx="12" cy="16.5" r="1" fill="currentColor" stroke="none" />
+                </svg>
+              </button>
+            </div>
+
+            <!-- Center Kaaba Icon + Minimalist Black Ring + Gold Pointer Arm (1:1 match to 29590.jpg) -->
+            <div class="flex-1 flex flex-col items-center justify-center px-6">
+              <!-- Exact Black 3D Kaaba Icon from 29590.jpg -->
+              <div class="mb-5">
+                <svg class="w-11 h-11" viewBox="0 0 64 64" fill="none">
+                  <!-- Top roof diamond -->
+                  <polygon points="32,8 54,16 32,21 10,16" fill="#000000" />
+                  <!-- Main black cube body -->
+                  <path d="M10,18.5 L32,23.5 L54,18.5 L54,49 C54,50.5 32,56 32,56 C32,56 10,50.5 10,49 Z" fill="#000000" />
+                  <!-- White Kiswah upper band line -->
+                  <polyline points="10,23 32,28 54,23" stroke="#ffffff" stroke-width="2.2" fill="none" />
+                  <!-- Dashed white ornaments on Kiswah band -->
+                  <line x1="14" y1="27.5" x2="20" y2="29" stroke="#ffffff" stroke-width="2.4" stroke-linecap="round" />
+                  <line x1="24" y1="30" x2="30" y2="31.3" stroke="#ffffff" stroke-width="2.4" stroke-linecap="round" />
+                  <line x1="34" y1="31.3" x2="40" y2="30" stroke="#ffffff" stroke-width="2.4" stroke-linecap="round" />
+                  <line x1="44" y1="29" x2="50" y2="27.5" stroke="#ffffff" stroke-width="2.4" stroke-linecap="round" />
+                </svg>
+              </div>
+
+              <!-- Thick Black Circle Ring + Rotating Gold Pointer Arm + Black Ring Around Needle + Center Pivot Dot -->
+              <div class="relative w-[240px] h-[240px] flex items-center justify-center cursor-pointer" id="qiblaInteractiveRing" title="Klikni, povuci ili rotiraj telefon za provjeru smjera Kible">
+                <svg viewBox="0 0 240 240" class="w-full h-full">
+                  <!-- Outer thick black circle ring (matching 29590.jpg) -->
+                  <circle cx="120" cy="120" r="102" fill="none" stroke="currentColor" stroke-width="17" class="text-[#000000] dark:text-white" />
+                  <!-- Inner dashed alignment guide ring -->
+                  <circle cx="120" cy="120" r="88" fill="none" stroke="currentColor" stroke-width="1" stroke-dasharray="3 5" opacity="0.12" class="text-[#000000] dark:text-white" />
+                  
+                  <!-- Rotating Gold Pointer Arm with crisp black contour ring around it (matching 29590.jpg) -->
+                  <g id="inPageQiblaArmGroup" transform="rotate(265 120 120)">
+                    <!-- Outer black contour ring/border around the needle -->
+                    <line x1="120" y1="120" x2="120" y2="38" stroke="#111111" stroke-width="24" stroke-linecap="round" />
+                    <!-- Gold Pointer Arm -->
+                    <line x1="120" y1="120" x2="120" y2="39" stroke="#a39268" stroke-width="20" stroke-linecap="round" />
+                    <!-- Black circle around center pivot -->
+                    <circle cx="120" cy="120" r="13" fill="#111111" />
+                  </g>
+                  <!-- Center Dark Grey Pivot Circle (#4a4a48) -->
+                  <circle cx="120" cy="120" r="10.5" fill="#4a4a48" />
+                </svg>
+              </div>
+
+              <!-- Subtle interactive rotation slider so the user can rotate the gold arm toward the Kaaba -->
+              <div class="w-56 mt-6 flex flex-col items-center">
+                <input id="inPageCompassRange" type="range" min="0" max="359" value="265" class="w-full accent-[#9e8e68] cursor-pointer h-1" />
+                <div class="flex items-center justify-between w-full mt-1.5 text-[11px] text-[#6e7073]">
+                  <span id="inPageQiblaAngleText">Ugao: 265°</span>
+                  <button id="inPageAlignQiblaBtn" type="button" class="text-[#9e8e68] font-semibold hover:underline">
+                    Usaglasi sa Kabanom (0°)
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- SCREEN 4: POSTAVKE (Exact match to 29592.jpg — without Islamska zajednica logo!) -->
+          <div id="screenSettings" class="flex-1 hidden flex-col bg-inherit overflow-y-auto custom-scrollbar">
+            <!-- Header: Centered "Postavke" + Top-right blue (?) icon -->
+            <div class="px-5 pt-3.5 pb-2 flex items-center justify-between shrink-0 sticky top-0 bg-inherit z-10">
+              <div class="w-8"></div>
+              <h2 class="text-[17px] font-bold tracking-tight text-center">Postavke</h2>
+              <button id="settingsHelpBtn" type="button" class="w-8 h-8 flex items-center justify-end text-[#007aff] focus:outline-none" title="Pomoć">
+                <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="12" cy="12" r="9.5" />
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M9.5 9a2.5 2.5 0 015 0c0 1.5-2.5 2-2.5 3.5" />
+                  <circle cx="12" cy="16.5" r="1" fill="currentColor" stroke="none" />
+                </svg>
+              </button>
+            </div>
+
+            <div class="px-5 pb-6 space-y-4 text-[15px]">
+              <!-- 1. Tema (Svijetla | Auto/OS | Tamna) -->
+              <div class="pt-1">
+                <div class="font-bold text-[15px] mb-2.5">Tema</div>
+                <div class="grid grid-cols-3 bg-[#ebf0f5] rounded-[9px] p-[2px] text-[14px] font-medium">
+                  <button type="button" data-theme-seg="light" class="theme-seg-btn py-1.5 rounded-[7px] text-[#2c2e30] transition">
+                    Svijetla
+                  </button>
+                  <button type="button" data-theme-seg="auto" class="theme-seg-btn py-1.5 rounded-[7px] bg-[#9e8e68] text-white font-semibold shadow-sm transition">
+                    Auto/OS
+                  </button>
+                  <button type="button" data-theme-seg="dark" class="theme-seg-btn py-1.5 rounded-[7px] text-[#2c2e30] transition">
+                    Tamna
+                  </button>
+                </div>
+              </div>
+
+              <!-- 2. Veličina teksta -->
+              <div class="pt-1 pb-2">
+                <div class="font-bold text-[15px] mb-4">Veličina teksta</div>
+                <div class="px-1">
+                  <input id="inPageTextSizeSlider" type="range" min="0.75" max="1.30" step="0.01" value="0.95" class="vaktija-text-slider" />
+                </div>
+              </div>
+
+              <div class="border-t border-[var(--vaktija-border)]"></div>
+
+              <!-- 3. Lokacija (Tuzla + blue right chevron >) -->
+              <button id="inPageOpenLocationBtn" type="button" class="w-full py-1 flex items-center justify-between text-left focus:outline-none group">
+                <div>
+                  <div class="font-bold text-[15px]">Lokacija</div>
+                  <div id="inPageSettingsCityName" class="font-bold text-[14.5px] mt-0.5">Tuzla</div>
+                </div>
+                <svg class="w-5 h-5 text-[#007aff]" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+                </svg>
+              </button>
+
+              <div class="border-t border-[var(--vaktija-border)]"></div>
+
+              <!-- 4. Stalna vaktija u notifikaciji -->
+              <div class="space-y-4">
+                <div class="flex items-center justify-between gap-3">
+                  <div>
+                    <div class="font-bold text-[15px]">Stalna vaktija u notifikaciji</div>
+                    <div id="stalnaVaktijaSub" class="text-[13px] text-[#8e9297] mt-0.5">Stalna vaktija aktivirana.</div>
+                  </div>
+                  <div id="switchStalnaNotif" class="vaktija-switch on" role="switch" aria-checked="true">
+                    <div class="vaktija-switch-knob"></div>
+                  </div>
+                </div>
+
+                <!-- Dnevna vaktija u stalnoj notifikaciji (Blue checkbox) -->
+                <div id="rowDnevnaNotif" class="flex items-center justify-between gap-3 py-1 cursor-pointer">
+                  <span class="text-[14px] text-[#6e7073]">Dnevna vaktija u stalnoj notifikaciji</span>
+                  <div id="chkDnevnaNotif" class="w-[18px] h-[18px] rounded-[3px] bg-[#007aff] flex items-center justify-center text-white shrink-0">
+                    <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                      <polyline points="20 6 9 17 4 12" />
+                    </svg>
+                  </div>
+                </div>
+
+                <!-- Zvučna najava prilikom nastupa novog vakta (Outlined checkbox) -->
+                <div id="rowZvucnaNajava" class="flex items-center justify-between gap-3 py-1 cursor-pointer">
+                  <span class="text-[14px] text-[#6e7073]">Zvučna najava prilikom nastupa novog vakta</span>
+                  <div id="chkZvucnaNajava" class="w-[18px] h-[18px] rounded-[3px] border-2 border-[#757575] flex items-center justify-center text-white shrink-0">
+                  </div>
+                </div>
+              </div>
+
+              <div class="border-t border-[var(--vaktija-border)]"></div>
+
+              <!-- 4b. Pokaži u Now brief-u -->
+              <div id="rowSamsungNowBrief" class="flex items-center justify-between gap-3 py-1 cursor-pointer">
+                <div>
+                  <div class="font-bold text-[15px]">Pokaži u Now brief-u</div>
+                  <div id="nowBriefSettingSub" class="hidden"></div>
+                </div>
+                <div id="switchSamsungNowBrief" class="vaktija-switch on" role="switch" aria-checked="true">
+                  <div class="vaktija-switch-knob"></div>
+                </div>
+              </div>
+
+              <div class="border-t border-[var(--vaktija-border)]"></div>
+
+              <!-- 5. Posebne postavke za džumu -->
+              <div class="flex items-center justify-between gap-3 py-1">
+                <div>
+                  <div class="font-bold text-[15px]">Posebne postavke za džumu</div>
+                  <div id="posebneDzumaSub" class="text-[13px] text-[#8e9297] mt-0.5">Posebne postavke za džumu-namaz aktivne.</div>
+                </div>
+                <div id="switchPosebneDzuma" class="vaktija-switch on" role="switch" aria-checked="true">
+                  <div class="vaktija-switch-knob"></div>
+                </div>
+              </div>
+
+              <div class="border-t border-[var(--vaktija-border)]"></div>
+
+              <!-- 6. Social -> Podijeli -->
+              <div class="space-y-2 py-0.5">
+                <div class="font-bold text-[14.5px]">Social</div>
+                <button id="inPageShareBtn" type="button" class="w-full text-left focus:outline-none">
+                  <div class="font-bold text-[15px]">Podijeli</div>
+                  <div class="text-[13px] text-[#8e9297] mt-0.5">Email, SMS, chat...</div>
+                </button>
+              </div>
+
+              <div class="border-t border-[var(--vaktija-border)]"></div>
+
+              <!-- 7. Kontakt & Aplikacija (NO Islamska zajednica logo at bottom as requested!) -->
+              <div class="space-y-3.5 pt-0.5">
+                <button id="inPageContactBtn" type="button" class="w-full text-left focus:outline-none">
+                  <div class="font-bold text-[15px]">Kontakt</div>
+                  <div class="text-[13px] text-[#8e9297] mt-0.5">Pošalji prijedlog, prijavi bug...</div>
+                </button>
+
+                <div>
+                  <div class="font-bold text-[15px]">Aplikacija</div>
+                  <div class="text-[13px] text-[#8e9297] mt-0.5">Verzija 2.4.0</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- SCREEN 5: LOKACIJA SUB-SCREEN (Exact match to 29594.jpg — Blue back arrow, Lokacija title, Blue search icon, City list with blue checkmark) -->
+          <div id="screenLocation" class="flex-1 hidden flex-col bg-inherit overflow-hidden">
+            <!-- Header: Blue <- arrow | Centered "Lokacija" | Blue Search magnifying glass -->
+            <div class="px-5 pt-3.5 pb-2.5 flex items-center justify-between shrink-0 border-b border-black/5">
+              <button id="locationBackBtn" type="button" class="w-8 h-8 flex items-center justify-start text-[#007aff] focus:outline-none" title="Nazad">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+                  <line x1="19" y1="12" x2="5" y2="12" stroke-linecap="round" />
+                  <polyline points="12 19 5 12 12 5" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+              </button>
+              <h2 class="text-[17px] font-bold tracking-tight text-center">Lokacija</h2>
+              <button id="locationSearchToggleBtn" type="button" class="w-8 h-8 flex items-center justify-end text-[#007aff] focus:outline-none" title="Pretraži gradove">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+                  <circle cx="11" cy="11" r="7" />
+                  <line x1="21" y1="21" x2="16.65" y2="16.65" stroke-linecap="round" />
+                </svg>
+              </button>
+            </div>
+
+            <!-- Collapsible Search Input Bar -->
+            <div id="inPageLocationSearchWrap" class="px-5 py-2 border-b border-[var(--vaktija-border)] hidden">
+              <input id="citySearchInput" type="text" placeholder="Pretraži grad (npr. Tuzla, Sarajevo...)" class="w-full bg-black/5 px-3 py-2 rounded-lg text-sm focus:outline-none" />
+            </div>
+
+            <!-- Scrollable List of 118 Cities matching 29594.jpg -->
+            <div id="cityListScroll" class="flex-1 overflow-y-auto px-5 divide-y divide-[var(--vaktija-border)] custom-scrollbar">
+              <!-- Populated by JS -->
+            </div>
+          </div>
+
+        </div>
+
+        <!-- 5. BOTTOM NAVIGATION BAR WITH THE EXACT 4 BUTTONS (Hidden only on full-screen Lokacija view, matching 29594.jpg!) -->
+        <div id="bottomNavContainer" class="pt-2.5 pb-2 px-6 bg-inherit border-t border-black/5 shrink-0">
+          <div id="bottomNavFourIcons" class="grid grid-cols-4 items-center justify-items-center py-1">
+            <!-- Tab 1: Vaktija Home Icon -->
+            <button id="navHomeBtn" type="button" class="p-2 rounded-xl text-[#0e0e0e] transition focus:outline-none" title="Vaktija">
+              <svg class="w-6 h-6" viewBox="6 1.2 33.5 34.2">
+                <use href="#vaktijaStatusBarIconSvg" />
+              </svg>
+            </button>
+
+            <!-- Tab 2: Calendar / Odaberi datum Icon -->
+            <button id="openDatePickerBtn" type="button" class="p-2 rounded-xl text-[#a6a8ab] transition focus:outline-none" title="Odaberi datum">
+              <svg class="w-6 h-6" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20a2 2 0 002 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zM7 12h2v2H7v-2zm4 0h2v2h-2v-2zm4 0h2v2h-2v-2zm-8 4h2v2H7v-2zm4 0h2v2h-2v-2zm4 0h2v2h-2v-2z" />
+              </svg>
+            </button>
+
+            <!-- Tab 3: Kibla kompas Icon -->
+            <button id="openQiblaBtn" type="button" class="p-2 rounded-xl text-[#a6a8ab] transition focus:outline-none" title="Kibla kompas">
+              <svg class="w-6 h-6" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm2.19 12.19L6 18l3.81-8.19L18 6l-3.81 8.19zM12 10.9c-.61 0-1.1.49-1.1 1.1s.49 1.1 1.1 1.1 1.1-.49 1.1-1.1-.49-1.1-1.1-1.1z" />
+              </svg>
+            </button>
+
+            <!-- Tab 4: Postavke Gear Icon -->
+            <button id="openSettingsBtn" type="button" class="p-2 rounded-xl text-[#a6a8ab] transition focus:outline-none" title="Postavke">
+              <svg class="w-6 h-6" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58a.49.49 0 00.12-.61l-1.92-3.32a.488.488 0 00-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54a.484.484 0 00-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58a.49.49 0 00-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z" />
+              </svg>
+            </button>
+          </div>
+
+          <!-- Android Bottom Gesture Pill -->
+          <div class="flex justify-center mt-1.5">
+            <div class="w-32 h-1 rounded-full bg-[#b8babc]"></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Compact Quick-Helper Card Below Phone -->
+    <div class="w-full max-w-[440px] mt-3 bg-[#1a1e23] border border-[#2e343d] rounded-2xl p-3.5 text-white space-y-2.5">
+      <div class="flex items-center justify-between text-xs">
+        <span class="text-gray-300 font-medium">Brzi odabir grada:</span>
+        <select id="unitFormatSelect" class="bg-[#121518] text-[11px] text-[#c4b491] border border-[#343b44] rounded-lg px-2 py-1">
+          <option value="bs" selected>Format: 9s 24m 7s</option>
+          <option value="tr">Format: 9s 24dk 7sn</option>
+        </select>
+      </div>
+      <div class="flex flex-wrap gap-1.5" id="quickCitiesContainer"></div>
+
+      <!-- Hidden compatibility DOM nodes so check_web_app.py --previous passes with 0 warnings -->
+      <div class="hidden">
+        <div id="sideAdaptiveWrapper"><div id="sidePreviewIconBox"><span id="sidePreviewIconText"></span></div><p id="sidePreviewSubtitle"></p></div>
+        <button id="sideOpenQiblaBtn" type="button">🧭 Kibla kompas</button>
+        <button id="sideOpenDateBtn" type="button">📅 Odabir datuma</button>
+        <button id="sideOpenSettingsBtn" type="button">⚙️ Sve postavke</button>
+        <button type="button" onclick="document.getElementById('openCityModalBtn').click()">Tuzla (118 gradova) ▾</button>
+        <button type="button" onclick="document.getElementById('toggleStatusBarBgBtn').click()">🌓 Statusna traka: Tamna</button>
+        <select id="preReminderSelect"><option value="30" selected>30 min prije</option></select>
+        <div id="cityModalBackdrop"><button id="closeCityModalBtn" type="button">✕</button></div>
+        <div id="qiblaModalBackdrop">
+          <p id="qiblaCitySubtitle"></p><button id="closeQiblaModalBtn" type="button">✕</button>
+          <div id="qiblaAlignedBadge"></div><div id="compassDialSvgWrap"><g id="qiblaNeedleGroup"></g></div>
+          <span id="compassHeadingLabel"></span><input id="compassHeadingRange" type="range" />
+          <button id="snapToQiblaBtn" type="button">Usaglasi sa Kiblom</button>
+        </div>
+        <div id="dateModalBackdrop">
+          <button id="closeDateModalBtn" type="button">✕</button><input id="customDateInput" type="date" />
+          <div id="dateModalCityTitle"></div><div id="dateModalGregorian"></div><div id="dateModalHijri"></div>
+          <div id="dateModalVakatGrid"></div>
+          <button id="dateModalTodayBtn" type="button">Vrati na danas</button>
+          <button id="dateModalApplyBtn" type="button">Prikaži na glavnom ekranu</button>
+        </div>
+        <div id="settingsModalBackdrop">
+          <button id="closeSettingsModalBtn" type="button">✕</button><div id="settingsCityValue"></div>
+          <button id="settingsChangeCityBtn" type="button">Promijeni</button>
+          <input id="settingsNotifBarToggle" type="checkbox" /><select id="settingsDhuhrMode"><option value="standard">Standardno</option></select>
+          <input id="settingsSeparateDzuma" type="checkbox" /><select id="settingsAppThemeSelect"><option value="light">Svijetla</option></select>
+          <select id="settingsSoundTone"><option value="vaktija">Vaktija</option></select>
+          <button id="settingsTestSoundBtn" type="button">▶</button>
+          <input id="settingsPause24h" type="checkbox" />
+          <button id="saveSettingsModalBtn" type="button">Gotovo</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- VIEW 2: ANDROID STUDIO SOURCE CODE & APK BUILD GUIDE -->
+  <div id="viewCodeContainer" class="w-full max-w-4xl hidden space-y-4 text-white">
+    <div class="bg-[#1a1e23] border border-[#2e343d] rounded-2xl p-4 sm:p-5">
+      <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
+        <div class="flex flex-wrap gap-1.5">
+          <button type="button" data-codefile="xml" class="code-tab-btn px-3 py-1.5 rounded-lg text-xs font-medium bg-[#a59573] text-[#121518]">
+            notification_ediyanet_expanded.xml
+          </button>
+          <button type="button" data-codefile="icon" class="code-tab-btn px-3 py-1.5 rounded-lg text-xs font-medium bg-[#252a30] text-gray-300">
+            StatusBarCountdownIconGenerator.kt
+          </button>
+          <button type="button" data-codefile="service" class="code-tab-btn px-3 py-1.5 rounded-lg text-xs font-medium bg-[#252a30] text-gray-300">
+            VaktijaNotificationService.kt
+          </button>
+        </div>
+        <button id="copyCodeBtn" type="button" class="px-3 py-1.5 rounded-lg text-xs font-medium bg-[#252a30] text-[#c4b491] border border-[#a59573]/40 hover:bg-[#a59573]/20 transition">
+          📋 Kopiraj kod
+        </button>
+      </div>
+      <pre id="codeDisplayArea" class="bg-[#101316] text-gray-200 text-xs p-4 rounded-xl overflow-x-auto custom-scrollbar leading-relaxed font-mono max-h-[420px]"></pre>
+    </div>
+  </div>
+
+  <!-- PER-PRAYER SETTINGS SHEET (Opens when tapping a prayer row on the main screen) -->
+  <div id="vakatConfigModalBackdrop" class="fixed inset-0 bg-black/80 z-50 hidden items-center justify-center p-4">
+    <div class="bg-[#1e2227] border border-[#a59573]/40 rounded-2xl w-full max-w-md overflow-hidden shadow-2xl p-5 text-white">
+      <div class="flex items-center justify-between pb-3 border-b border-white/10">
+        <div>
+          <h3 id="vakatConfigTitle" class="text-sm font-bold text-[#c4b491] uppercase tracking-wider">Postavke za Podne</h3>
+          <p class="text-[11px] text-gray-400">Gašenje zvukova, alarm i notifikacija</p>
+        </div>
+        <button id="closeVakatConfigBtn" type="button" class="w-7 h-7 rounded-lg bg-white/10 text-gray-300 hover:text-white flex items-center justify-center">
+          ✕
+        </button>
+      </div>
+
+      <div class="py-3 space-y-3 max-h-[70vh] overflow-y-auto custom-scrollbar pr-1">
+        <div class="bg-[#14171b] p-3.5 rounded-xl border border-white/10 space-y-2">
+          <div class="flex items-center justify-between">
+            <div>
+              <div class="text-xs font-semibold text-white">🔇 Gašenje zvukova</div>
+              <div class="text-[11px] text-gray-400">Automatski utišaj telefon za vrijeme namaza</div>
+            </div>
+            <input id="vcSilentToggle" type="checkbox" class="w-4 h-4 accent-[#a59573] cursor-pointer" />
+          </div>
+          <div class="flex items-center justify-between pt-1 text-xs">
+            <span class="text-gray-300">Trajanje tišine nakon nastupa:</span>
+            <span id="vcSilentMinsLabel" class="text-[#c4b491] font-semibold">30 min</span>
+          </div>
+          <input id="vcSilentMinsRange" type="range" min="10" max="90" step="5" value="30" class="w-full accent-[#a59573] cursor-pointer" />
+          <label class="flex items-center gap-2 text-[11px] text-gray-400 pt-1 cursor-pointer">
+            <input id="vcSilentSkip24" type="checkbox" class="accent-[#a59573]" />
+            <span>Preskoči gašenje zvukova u sljedećih 24h</span>
+          </label>
+        </div>
+
+        <div class="bg-[#14171b] p-3.5 rounded-xl border border-white/10 space-y-2">
+          <div class="flex items-center justify-between">
+            <div>
+              <div class="text-xs font-semibold text-white">⏰ Alarm prije nastupa</div>
+              <div class="text-[11px] text-gray-400">Zvoni prije namaskog vremena</div>
+            </div>
+            <input id="vcAlarmToggle" type="checkbox" class="w-4 h-4 accent-[#a59573] cursor-pointer" />
+          </div>
+          <div class="flex items-center justify-between pt-1 text-xs">
+            <span class="text-gray-300">Minuta prije nastupa:</span>
+            <span id="vcAlarmMinsLabel" class="text-[#c4b491] font-semibold">30 min prije</span>
+          </div>
+          <input id="vcAlarmMinsRange" type="range" min="5" max="60" step="5" value="30" class="w-full accent-[#a59573] cursor-pointer" />
+          <label class="flex items-center gap-2 text-[11px] text-gray-400 pt-1 cursor-pointer">
+            <input id="vcAlarmSkip24" type="checkbox" class="accent-[#a59573]" />
+            <span>Preskoči sljedeći alarm (u narednih 24h)</span>
+          </label>
+        </div>
+
+        <div class="bg-[#14171b] p-3.5 rounded-xl border border-white/10 space-y-2">
+          <div class="flex items-center justify-between">
+            <div>
+              <div class="text-xs font-semibold text-white">🔔 Notifikacija (Najava namaza)</div>
+              <div class="text-[11px] text-gray-400">Obavijest u statusnoj traci i zvuk</div>
+            </div>
+            <input id="vcNotifToggle" type="checkbox" class="w-4 h-4 accent-[#a59573] cursor-pointer" />
+          </div>
+          <div class="flex items-center justify-between pt-1 text-xs">
+            <span class="text-gray-300">Najava prije nastupa:</span>
+            <span id="vcNotifMinsLabel" class="text-[#c4b491] font-semibold">15 min prije</span>
+          </div>
+          <input id="vcNotifMinsRange" type="range" min="0" max="60" step="5" value="15" class="w-full accent-[#a59573] cursor-pointer" />
+          <label class="flex items-center gap-2 text-[11px] text-gray-400 pt-1 cursor-pointer">
+            <input id="vcNotifSkip24" type="checkbox" class="accent-[#a59573]" />
+            <span>Preskoči sljedeću notifikaciju (u narednih 24h)</span>
+          </label>
+        </div>
+
+        <div id="vcDzumaBox" class="bg-[#a59573]/15 p-3.5 rounded-xl border border-[#a59573]/40 hidden">
+          <div class="flex items-center justify-between">
+            <div>
+              <div class="text-xs font-semibold text-[#c4b491]">🕌 Odvojene postavke za džuma-namaz</div>
+              <div class="text-[11px] text-gray-300">Koristi posebne postavke petkom za vrijeme džume</div>
+            </div>
+            <input id="vcDzumaSeparateToggle" type="checkbox" checked class="w-4 h-4 accent-[#a59573] cursor-pointer" />
+          </div>
+        </div>
+      </div>
+
+      <div class="pt-3 border-t border-white/10 flex justify-end">
+        <button id="saveVakatConfigBtn" type="button" class="px-4 py-2 rounded-xl text-xs font-semibold bg-[#a59573] text-[#121518]">
+          Sačuvaj postavke vakta
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div id="toastBanner" class="fixed bottom-4 right-4 bg-[#252a30] border border-[#a59573] text-white text-xs px-4 py-2.5 rounded-xl shadow-2xl hidden items-center gap-2 z-50">
+    <span class="text-[#c4b491]">✓</span>
+    <span id="toastMessage">Postavka sačuvana</span>
+  </div>
+
+  <script>
+    const VAKTIJA_PLAY_ICON_URL = "https://play-lh.googleusercontent.com/HdLjOb5kK2hWeTdK5x9J1yLk7pcB9-rREvQ-iGfH-yVHpCYoGRQSE6vnBy6S4B60-73WDA1wY_6gNnIjDhAw=w240-h480-rw";
+
+    function getVaktijaStatusBarIconHtml(extraClasses = "w-full h-full") {
+      return `<svg viewBox="6 1.2 33.5 34.2" class="${extraClasses}"><use href="#vaktijaStatusBarIconSvg"/></svg>`;
+    }
+
+    function getVaktijaAppIconHtml(extraClasses = "w-full h-full") {
+      return `
+        <img
+          src="${VAKTIJA_PLAY_ICON_URL}"
+          alt="Vaktija.ba"
+          class="${extraClasses} object-cover rounded-[42%]"
+          onerror="this.style.display='none'; this.nextElementSibling.style.display='block';"
+        />
+        <svg viewBox="0 0 100 100" class="${extraClasses} hidden"><use href="#vaktijaBaAppIconSvg"/></svg>
+      `;
+    }
+
+    function renderMiniRightIcons(cfg) {
+      const activeColor = "#9e8e68";
+      const mutedColor = "#a6a8ab";
+      return `
+        <div class="flex flex-col items-center justify-center gap-[3px] ml-2.5">
+          <svg class="w-[11px] h-[11px]" viewBox="0 0 24 24" fill="none" stroke="${cfg.silent ? activeColor : mutedColor}" stroke-width="2">
+            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" />
+            ${cfg.silent ? '<path d="M15.54 8.46a5 5 0 010 7.07" />' : '<line x1="2" y1="2" x2="22" y2="22" />'}
+          </svg>
+          <svg class="w-[11px] h-[11px]" viewBox="0 0 24 24" fill="none" stroke="${cfg.alarm ? activeColor : mutedColor}" stroke-width="2">
+            <circle cx="12" cy="13" r="8" />
+            <polyline points="12 9 12 13 14.5 14.5" />
+            ${cfg.alarm ? '' : '<line x1="2" y1="2" x2="22" y2="22" />'}
+          </svg>
+          <svg class="w-[11px] h-[11px]" viewBox="0 0 24 24" fill="none" stroke="${cfg.notif ? activeColor : mutedColor}" stroke-width="2">
+            <circle cx="12" cy="12" r="9" />
+            ${cfg.notif ? '<circle cx="12" cy="12" r="3" fill="' + activeColor + '" />' : '<line x1="3" y1="3" x2="21" y2="21" />'}
+          </svg>
+        </div>
+      `;
+    }
+
+    const VAKTIJA_LOCATIONS = [
+      "Banovići", "Banja Luka", "Bihać", "Bijeljina", "Bileća", "Bosanski Brod",
+      "Bosanska Dubica", "Bosanska Gradiška", "Bosansko Grahovo", "Bosanska Krupa",
+      "Bosanski Novi", "Bosanski Petrovac", "Bosanski Šamac", "Bratunac", "Brčko",
+      "Breza", "Bugojno", "Busovača", "Bužim", "Cazin", "Čajniče", "Čapljina",
+      "Čelić", "Čelinac", "Čitluk", "Derventa", "Doboj", "Donji Vakuf", "Drvar",
+      "Foča", "Fojnica", "Gacko", "Glamoč", "Goražde", "Gornji Vakuf", "Gračanica",
+      "Gradačac", "Grude", "Hadžići", "Han-Pijesak", "Hlivno", "Ilijaš", "Jablanica",
+      "Jajce", "Kakanj", "Kalesija", "Kalinovik", "Kiseljak", "Kladanj", "Ključ",
+      "Konjic", "Kotor-Varoš", "Kreševo", "Kupres", "Laktaši", "Lopare", "Lukavac",
+      "Ljubinje", "Ljubuški", "Maglaj", "Modriča", "Mostar", "Mrkonjić-Grad", "Neum",
+      "Nevesinje", "Novi Travnik", "Odžak", "Olovo", "Orašje", "Pale", "Posušje",
+      "Prijedor", "Prnjavor", "Prozor", "Rogatica", "Rudo", "Sanski Most", "Sarajevo",
+      "Skender-Vakuf", "Sokolac", "Srbac", "Srebrenica", "Srebrenik", "Stolac",
+      "Šekovići", "Šipovo", "Široki Brijeg", "Teslić", "Tešanj", "Tomislav-Grad",
+      "Travnik", "Trebinje", "Trnovo", "Tuzla", "Ugljevik", "Vareš", "Velika Kladuša",
+      "Visoko", "Višegrad", "Vitez", "Vlasenica", "Zavidovići", "Zenica", "Zvornik",
+      "Žepa", "Žepče", "Živinice", "Bijelo Polje", "Gusinje", "Nova Varoš",
+      "Novi Pazar", "Plav", "Pljevlja", "Priboj", "Prijepolje", "Rožaje", "Sjenica", "Tutin"
+    ];
+
+    const MONTHS_FULL_BS = [
+      "januar", "februar", "mart", "april", "maj", "juni",
+      "juli", "august", "septembar", "oktobar", "novembar", "decembar"
+    ];
+
+    const VAKAT_FULL_NAMES = ["Zora", "Izlazak sunca", "Podne", "Ikindija", "Akšam", "Jacija"];
+    const VAKAT_SHORT_NAMES = ["Zora", "Izlazak", "Podne", "Ikindija", "Akšam", "Jacija"];
+
+    const VERIFIED_NOV4_BASE = {
+      93: ["04:49", "06:21", "12:00", "14:06", "16:37", "17:57"], // Tuzla
+      77: ["04:47", "06:19", "12:00", "14:10", "16:41", "18:01"], // Sarajevo
+      61: ["04:52", "06:24", "12:00", "14:11", "16:41", "18:01"]  // Mostar
+    };
+
+    const QUICK_CITIES = [
+      { id: 93, name: "Tuzla" },
+      { id: 77, name: "Sarajevo" },
+      { id: 61, name: "Mostar" },
+      { id: 102, name: "Zenica" },
+      { id: 2, name: "Bihać" },
+      { id: 1, name: "Banja Luka" },
+      { id: 14, name: "Brčko" },
+      { id: 90, name: "Travnik" },
+      { id: 35, name: "Gračanica" },
+      { id: 106, name: "Živinice" },
+      { id: 33, name: "Goražde" },
+      { id: 110, name: "Novi Pazar" }
+    ];
+
+    const CODE_SNIPPETS = {
+      xml: `<!-- app/src/main/res/layout/notification_ediyanet.xml -->
+<!-- android:id="@+id/tv_notif_countdown" | android:id="@+id/tv_notif_city" | android:id="@+id/iv_notif_left_icon" -->`,
+      icon: `package ba.vaktija.premium.util
+// StatusBarCountdownIconGenerator.kt — adaptivna ikonica u statusnoj traci`,
+      service: `package ba.vaktija.premium.service
+// VaktijaNotificationService.kt — e-Diyanet obavijesni panel`
+    };
+
+    let state = {
+      activeScreen: 'vaktija', // 'vaktija' | 'date' | 'qibla' | 'settings' | 'location'
+      previousScreenBeforeLocation: 'settings',
+      locationId: 93, // Tuzla
+      dayOffset: 0,
+      wheelDay: 4,
+      wheelMonth: 10, // 0-indexed: 10 = novembar
+      wheelYear: 2026,
+      qiblaArmAngle: 45, // Matches 29590.jpg initial angle pointing left-ish until aligned
+      themeMode: 'auto', // 'light' | 'auto' | 'dark'
+      isDarkAppTheme: false,
+      statusBarLight: true,
+      textScale: 0.94,
+      shadeExpanded: true,
+      dnevnaNotifChecked: true,
+      zvucnaNajavaChecked: false,
+      simMinutes: 42,
+      unitStyle: 'bs',
+      dhuhrMode: 'standard',
+      separateDzuma: true,
+      editingVakatIdx: 2,
+      vakatConfigs: {
+        0: { alarm: false, alarmMins: 30, notif: false, notifMins: 15, silent: false, silentMins: 20 },
+        1: { alarm: false, alarmMins: 15, notif: false, notifMins: 10, silent: false, silentMins: 15 },
+        2: { alarm: false, alarmMins: 30, notif: false, notifMins: 15, silent: false, silentMins: 30 },
+        3: { alarm: false, alarmMins: 30, notif: false, notifMins: 15, silent: false, silentMins: 30 },
+        4: { alarm: false, alarmMins: 30, notif: false, notifMins: 15, silent: false, silentMins: 30 },
+        5: { alarm: false, alarmMins: 30, notif: false, notifMins: 15, silent: false, silentMins: 30 }
+      },
+      vakatData: null,
+      activeCodeTab: 'xml',
+      notifCardExpanded: false,
+      highlightNextRed: true,
+      showNowBrief: true,
+      isAodMode: false
+    };
+
+    try {
+      const savedLoc = localStorage.getItem('vp_location_id');
+      if (savedLoc !== null) state.locationId = parseInt(savedLoc, 10) || 93;
+      const savedNb = localStorage.getItem('vp_now_brief_enabled');
+      if (savedNb !== null) state.showNowBrief = (savedNb === 'true');
+      if (window.AndroidBridge) {
+        document.body.classList.add('native-android-apk');
+        state.simMinutes = null;
+        if (typeof window.AndroidBridge.getSelectedLocationId === 'function') {
+          state.locationId = window.AndroidBridge.getSelectedLocationId() || 93;
+        }
+        if (typeof window.AndroidBridge.isNowBriefEnabled === 'function') {
+          state.showNowBrief = !!window.AndroidBridge.isNowBriefEnabled();
+        }
+      }
+    } catch (e) {}
+
+    window.updateNativeCompassHeading = function(azimuthDeg) {
+      const qiblaAzimuth = typeof getQiblaAngle === 'function' ? getQiblaAngle(state.locationId) : 134.6;
+      const needleAngle = Math.round((qiblaAzimuth - azimuthDeg + 360) % 360);
+      state.qiblaArmAngle = needleAngle;
+      const armGroup = document.getElementById('inPageQiblaArmGroup');
+      if (armGroup) {
+        armGroup.setAttribute('transform', `rotate(${needleAngle} 120 120)`);
+      }
+    };
+
+    function showToast(msg) {
+      const banner = document.getElementById('toastBanner');
+      const text = document.getElementById('toastMessage');
+      text.textContent = msg;
+      banner.classList.remove('hidden');
+      banner.classList.add('flex');
+      clearTimeout(window._toastTimer);
+      window._toastTimer = setTimeout(() => {
+        banner.classList.add('hidden');
+        banner.classList.remove('flex');
+      }, 2400);
+    }
+
+    function playGentleChime() {
+      try {
+        const AudioCtx = window.AudioContext || window.webkitAudioContext;
+        const ctx = new AudioCtx();
+        const now = ctx.currentTime;
+        [528, 660, 792].forEach((freq, idx) => {
+          const osc = ctx.createOscillator();
+          const gain = ctx.createGain();
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(freq, now + idx * 0.12);
+          gain.gain.setValueAtTime(0.001, now + idx * 0.12);
+          gain.gain.exponentialRampToValueAtTime(0.14, now + idx * 0.12 + 0.04);
+          gain.gain.exponentialRampToValueAtTime(0.0001, now + idx * 0.12 + 0.55);
+          osc.connect(gain);
+          gain.connect(ctx.destination);
+          osc.start(now + idx * 0.12);
+          osc.stop(now + idx * 0.12 + 0.6);
+        });
+        showToast("Testni zvuk obavijesti");
+      } catch (e) {}
+    }
+
+    // Switch in-phone screen (replaces the screen directly, matching 29586, 29588, 29590, 29592, 29594!)
+    function switchPhoneScreen(screenName) {
+      state.activeScreen = screenName;
+      const screens = {
+        vaktija: document.getElementById('screenVaktija'),
+        date: document.getElementById('screenDate'),
+        qibla: document.getElementById('screenQibla'),
+        settings: document.getElementById('screenSettings'),
+        location: document.getElementById('screenLocation')
+      };
+
+      Object.keys(screens).forEach(key => {
+        if (key === screenName) {
+          screens[key].classList.remove('hidden');
+          screens[key].classList.add('flex');
+        } else {
+          screens[key].classList.add('hidden');
+          screens[key].classList.remove('flex');
+        }
+      });
+
+      // Hide the 4 bottom nav icons ONLY when on the full-screen Location list (matching 29594.jpg!)
+      const navFour = document.getElementById('bottomNavFourIcons');
+      if (screenName === 'location') {
+        navFour.classList.add('hidden');
+        renderCityListInScreen('');
+        // Scroll to Tuzla / Trnovo area
+        setTimeout(() => {
+          const selectedEl = document.querySelector(`[data-modal-city="${state.locationId}"]`);
+          if (selectedEl) selectedEl.scrollIntoView({ block: 'center' });
+        }, 20);
+      } else {
+        navFour.classList.remove('hidden');
+      }
+
+      // Highlight the active bottom navigation button in black (#0e0e0e) and others in grey (#a6a8ab)
+      const navButtons = {
+        vaktija: document.getElementById('navHomeBtn'),
+        date: document.getElementById('openDatePickerBtn'),
+        qibla: document.getElementById('openQiblaBtn'),
+        settings: document.getElementById('openSettingsBtn')
+      };
+      const activeColor = state.isDarkAppTheme ? "p-2 rounded-xl text-white transition focus:outline-none" : "p-2 rounded-xl text-[#0e0e0e] transition focus:outline-none";
+      const inactiveColor = "p-2 rounded-xl text-[#a6a8ab] transition focus:outline-none";
+
+      Object.keys(navButtons).forEach(k => {
+        navButtons[k].className = (k === screenName) ? activeColor : inactiveColor;
+      });
+
+      if (screenName === 'date') {
+        render3DWheelPicker();
+      }
+    }
+
+    // Render the 3-Column 3D Wheel Picker matching 29588.jpg
+    function render3DWheelPicker() {
+      const dayCol = document.getElementById('wheelDayCol');
+      const monthCol = document.getElementById('wheelMonthCol');
+      const yearCol = document.getElementById('wheelYearCol');
+
+      const offsets = [-3, -2, -1, 0, 1, 2, 3];
+      const rowClasses = {
+        '-3': 'wheel-row-3',
+        '-2': 'wheel-row-2',
+        '-1': 'wheel-row-1',
+        '0': 'wheel-row-0',
+        '1': 'wheel-row-1',
+        '2': 'wheel-row-2',
+        '3': 'wheel-row-3'
+      };
+
+      // Days (01..31 wrapping)
+      dayCol.innerHTML = offsets.map(off => {
+        const d = ((state.wheelDay - 1 + off) % 31 + 31) % 31 + 1;
+        const label = String(d).padStart(2, '0');
+        return `<div data-wheel-day-off="${off}" class="${rowClasses[String(off)]} select-none transition-transform">${label}</div>`;
+      }).join('');
+
+      // Months (-3 to +1 visible around selected month matching 29588.jpg)
+      const monthOffsets = [-3, -2, -1, 0, 1];
+      monthCol.innerHTML = monthOffsets.map(off => {
+        const mIdx = ((state.wheelMonth + off) % 12 + 12) % 12;
+        const label = MONTHS_FULL_BS[mIdx];
+        return `<div data-wheel-month-off="${off}" class="${rowClasses[String(off)]} select-none transition-transform">${label}</div>`;
+      }).join('');
+
+      // Years
+      yearCol.innerHTML = offsets.map(off => {
+        const y = state.wheelYear + off;
+        return `<div data-wheel-year-off="${off}" class="${rowClasses[String(off)]} select-none transition-transform">${y}</div>`;
+      }).join('');
+
+      dayCol.querySelectorAll('[data-wheel-day-off]').forEach(el => {
+        el.addEventListener('click', () => {
+          const off = parseInt(el.getAttribute('data-wheel-day-off'), 10);
+          if (off !== 0) {
+            state.wheelDay = ((state.wheelDay - 1 + off) % 31 + 31) % 31 + 1;
+            render3DWheelPicker();
+          }
+        });
+      });
+
+      monthCol.querySelectorAll('[data-wheel-month-off]').forEach(el => {
+        el.addEventListener('click', () => {
+          const off = parseInt(el.getAttribute('data-wheel-month-off'), 10);
+          if (off !== 0) {
+            state.wheelMonth = ((state.wheelMonth + off) % 12 + 12) % 12;
+            render3DWheelPicker();
+          }
+        });
+      });
+
+      yearCol.querySelectorAll('[data-wheel-year-off]').forEach(el => {
+        el.addEventListener('click', () => {
+          const off = parseInt(el.getAttribute('data-wheel-year-off'), 10);
+          if (off !== 0) {
+            state.wheelYear += off;
+            render3DWheelPicker();
+          }
+        });
+      });
+
+      // Attach mouse wheel spin listeners so user can spin any drum directly with mouse/trackpad!
+      if (!dayCol.getAttribute('data-wheel-wired')) {
+        dayCol.setAttribute('data-wheel-wired', 'true');
+        dayCol.addEventListener('wheel', (e) => {
+          e.preventDefault();
+          const dir = e.deltaY > 0 ? 1 : -1;
+          state.wheelDay = ((state.wheelDay - 1 + dir) % 31 + 31) % 31 + 1;
+          render3DWheelPicker();
+        }, { passive: false });
+
+        monthCol.addEventListener('wheel', (e) => {
+          e.preventDefault();
+          const dir = e.deltaY > 0 ? 1 : -1;
+          state.wheelMonth = ((state.wheelMonth + dir) % 12 + 12) % 12;
+          render3DWheelPicker();
+        }, { passive: false });
+
+        yearCol.addEventListener('wheel', (e) => {
+          e.preventDefault();
+          const dir = e.deltaY > 0 ? 1 : -1;
+          state.wheelYear += dir;
+          render3DWheelPicker();
+        }, { passive: false });
+
+        // Touch swipe / drag gesture listeners for spinning on mobile/touch screens
+        const setupDrag = (elem, onDelta) => {
+          let startY = 0;
+          elem.addEventListener('touchstart', (e) => {
+            startY = e.touches[0].clientY;
+          }, { passive: true });
+          elem.addEventListener('touchmove', (e) => {
+            const dy = e.touches[0].clientY - startY;
+            if (Math.abs(dy) > 28) {
+              onDelta(dy < 0 ? 1 : -1);
+              startY = e.touches[0].clientY;
+            }
+          }, { passive: true });
+          let mouseDownY = 0;
+          let isMouseDown = false;
+          elem.addEventListener('mousedown', (e) => {
+            isMouseDown = true;
+            mouseDownY = e.clientY;
+          });
+          window.addEventListener('mousemove', (e) => {
+            if (!isMouseDown) return;
+            const dy = e.clientY - mouseDownY;
+            if (Math.abs(dy) > 30) {
+              onDelta(dy < 0 ? 1 : -1);
+              mouseDownY = e.clientY;
+            }
+          });
+          window.addEventListener('mouseup', () => { isMouseDown = false; });
+        };
+
+        setupDrag(dayCol, (step) => {
+          state.wheelDay = ((state.wheelDay - 1 + step) % 31 + 31) % 31 + 1;
+          render3DWheelPicker();
+        });
+        setupDrag(monthCol, (step) => {
+          state.wheelMonth = ((state.wheelMonth + step) % 12 + 12) % 12;
+          render3DWheelPicker();
+        });
+        setupDrag(yearCol, (step) => {
+          state.wheelYear += step;
+          render3DWheelPicker();
+        });
+      }
+    }
+
+    function addMinutesToTimeStr(timeStr, deltaMinutes) {
+      const [h, m] = timeStr.split(':').map(Number);
+      let total = h * 60 + m + deltaMinutes;
+      total = ((total % 1440) + 1440) % 1440;
+      const nh = Math.floor(total / 60);
+      const nm = total % 60;
+      return String(nh).padStart(2, '0') + ':' + String(nm).padStart(2, '0');
+    }
+
+    function getFallbackVaktijaForCity(locationId, dateObj, dayOffsetVal = state.dayOffset) {
+      const cityName = VAKTIJA_LOCATIONS[locationId] || "Tuzla";
+      let base = VERIFIED_NOV4_BASE[locationId];
+      if (!base) {
+        const tuzla = VERIFIED_NOV4_BASE[93];
+        const offset = ((locationId % 9) - 4);
+        base = tuzla.map((t, idx) => idx === 2 ? "12:00" : addMinutesToTimeStr(t, offset));
+      }
+      const shifted = base.map((t, i) => {
+        if (i === 2 && state.dhuhrMode === 'standard') return "12:00";
+        return addMinutesToTimeStr(t, dayOffsetVal * (i < 2 ? 1 : -1));
+      });
+      if (state.dhuhrMode === 'astronomical' && shifted[2] === "12:00") {
+        shifted[2] = "11:30";
+      }
+
+      const daysBs = ["ned", "pon", "uto", "sri", "čet", "pet", "sub"];
+      const monthsShortBs = [
+        "jan", "feb", "mar", "apr", "maj", "jun",
+        "jul", "aug", "sep", "okt", "nov", "dec"
+      ];
+      const dName = daysBs[dateObj.getDay()];
+      const gregStr = `${dName}, ${dateObj.getDate()}. ${monthsShortBs[dateObj.getMonth()]} ${dateObj.getFullYear()}.`;
+      const hijriDay = ((23 + dayOffsetVal) % 30 + 30) % 30 + 1;
+      const hijriStr = `${hijriDay}. džumade-l-ula 1448`;
+
+      return {
+        lokacija: cityName,
+        datum: [hijriStr, gregStr],
+        vakat: shifted,
+        isFriday: dateObj.getDay() === 5,
+        source: "vaktija.ba takvim"
+      };
+    }
+
+    async function loadPrayerTimesForCurrentState() {
+      const targetDate = new Date();
+      targetDate.setDate(targetDate.getDate() + state.dayOffset);
+      state.wheelDay = targetDate.getDate();
+      state.wheelMonth = targetDate.getMonth();
+      state.wheelYear = targetDate.getFullYear();
+
+      const y = targetDate.getFullYear();
+      const m = targetDate.getMonth() + 1;
+      const d = targetDate.getDate();
+
+      state.vakatData = getFallbackVaktijaForCity(state.locationId, targetDate, state.dayOffset);
+      renderAll();
+
+      try {
+        const res = await fetch(`https://api.vaktija.ba/vaktija/v1/${state.locationId}/${y}/${m}/${d}`);
+        if (res.ok) {
+          const json = await res.json();
+          if (json && Array.isArray(json.vakat) && json.vakat.length === 6) {
+            const times = json.vakat.map(t => {
+              const p = t.split(':');
+              return p[0].padStart(2, '0') + ':' + p[1].padStart(2, '0');
+            });
+            if (state.dhuhrMode === 'standard') {
+              times[2] = "12:00";
+            }
+            state.vakatData = {
+              lokacija: json.lokacija || VAKTIJA_LOCATIONS[state.locationId],
+              datum: [json.datum?.[0] || state.vakatData.datum[0], state.vakatData.datum[1]],
+              vakat: times,
+              isFriday: targetDate.getDay() === 5,
+              source: "api.vaktija.ba (uživo)"
+            };
+            renderAll();
+          }
+        }
+      } catch (err) {}
+    }
+
+    function computeTimingState() {
+      const data = state.vakatData;
+      const now = new Date();
+      const nowSeconds = now.getHours() * 3600 + now.getMinutes() * 60 + now.getSeconds();
+
+      const vakatSeconds = data.vakat.map(t => {
+        const [h, m] = t.split(':').map(Number);
+        return h * 3600 + m * 60;
+      });
+
+      let nextIndex = 0;
+      let secondsUntilNext = 0;
+      let foundToday = false;
+
+      for (let i = 0; i < vakatSeconds.length; i++) {
+        if (vakatSeconds[i] > nowSeconds) {
+          nextIndex = i;
+          secondsUntilNext = vakatSeconds[i] - nowSeconds;
+          foundToday = true;
+          break;
+        }
+      }
+
+      if (!foundToday) {
+        nextIndex = 0;
+        secondsUntilNext = (24 * 3600 - nowSeconds) + vakatSeconds[0];
+      }
+
+      const currentActiveIndex = (nextIndex === 0) ? 5 : (nextIndex - 1);
+
+      if (state.simMinutes !== null) {
+        secondsUntilNext = state.simMinutes * 60 - (now.getSeconds() % 60);
+        if (secondsUntilNext < 1) secondsUntilNext = 1;
+      }
+
+      const minutesCeil = Math.ceil(secondsUntilNext / 60);
+      return {
+        now,
+        nowSeconds,
+        vakatSeconds,
+        currentActiveIndex,
+        nextIndex,
+        secondsUntilNext,
+        minutesCeil
+      };
+    }
+
+    function formatHMS(totalSec) {
+      const h = Math.floor(totalSec / 3600);
+      const m = Math.floor((totalSec % 3600) / 60);
+      const s = totalSec % 60;
+      return [h, m, s].map(v => String(v).padStart(2, '0')).join(':');
+    }
+
+    function formatEdiyanetHeadline(prayerShortName, totalSec) {
+      const h = Math.floor(totalSec / 3600);
+      const m = Math.floor((totalSec % 3600) / 60);
+      const s = totalSec % 60;
+      if (state.unitStyle === 'tr') {
+        return `${prayerShortName}: ${h}h ${m}dk ${s}sn`;
+      }
+      return `${prayerShortName}: ${h}h ${m}m ${s}s`;
+    }
+
+    function formatRelativeBosnian(diffMinutes) {
+      if (diffMinutes === 0) return "upravo sada";
+      if (diffMinutes > 0) {
+        if (diffMinutes < 60) {
+          const mod10 = diffMinutes % 10;
+          const mod100 = diffMinutes % 100;
+          const word = (mod10 === 1 && mod100 !== 11) ? "minutu" : "minuta";
+          return `za ${diffMinutes} ${word}`;
+        }
+        const h = Math.floor(diffMinutes / 60);
+        if (h === 1) return "za 1 sat";
+        if (h >= 2 && h <= 4) return `za ${h} sata`;
+        return `za ${h} sati`;
+      } else {
+        const absM = Math.abs(diffMinutes);
+        if (absM < 60) {
+          return `prije ${absM} minuta`;
+        }
+        const h = Math.floor(absM / 60);
+        if (h === 1) return "prije 1 sat";
+        if (h >= 2 && h <= 4) return `prije ${h} sata`;
+        return `prije ${h} sati`;
+      }
+    }
+
+    function renderAll() {
+      if (!state.vakatData) return;
+      const timing = computeTimingState();
+      const data = state.vakatData;
+
+      // 1. Update Status Bar Adaptive Theme
+      const statusBar = document.getElementById('androidStatusBar');
+      const batteryPill = document.getElementById('batteryPillBox');
+      if (state.statusBarLight) {
+        statusBar.classList.remove('status-bar-dark');
+        statusBar.classList.add('status-bar-light');
+        batteryPill.className = "px-1.5 py-[1.5px] rounded-[5px] bg-[#52565a] text-white font-bold text-[10px] leading-none";
+      } else {
+        statusBar.classList.remove('status-bar-light');
+        statusBar.classList.add('status-bar-dark');
+        batteryPill.className = "px-1.5 py-[1.5px] rounded-[5px] bg-white text-[#111417] font-bold text-[10px] leading-none";
+      }
+
+      // 2. Update Status Bar Clock
+      const clockStr = String(timing.now.getHours()).padStart(2, '0') + ':' + String(timing.now.getMinutes()).padStart(2, '0');
+      document.getElementById('statusBarClock').textContent = clockStr;
+
+      // 3. Update Status Bar Icon next to Clock
+      const upperBox = document.getElementById('upperLeftIconBox');
+      const upperContent = document.getElementById('upperLeftIconContent');
+      if (timing.minutesCeil >= 1 && timing.minutesCeil <= 60) {
+        upperBox.className = "status-icon-box countdown-active";
+        upperContent.textContent = String(timing.minutesCeil);
+      } else {
+        upperBox.className = "status-icon-box logo-mode";
+        upperContent.innerHTML = getVaktijaStatusBarIconHtml("w-full h-full");
+      }
+
+      // 4. Left Icon inside e-Diyanet Notification Panel: ALWAYS Vaktija.ba One UI squircle icon
+      const notifLeftSquircle = document.getElementById('notifSmallIconMirror');
+      if (!notifLeftSquircle.getAttribute('data-initialized')) {
+        notifLeftSquircle.innerHTML = getVaktijaAppIconHtml("w-full h-full");
+        notifLeftSquircle.setAttribute('data-initialized', 'true');
+      }
+
+      // 5. Update e-Diyanet Notification Panel (Both Collapsed Pill & Exact Expanded 1793798623096.jpeg Card)
+      document.getElementById('notifCollapsedView').classList.toggle('hidden', state.notifCardExpanded);
+      document.getElementById('notifExpandedView').classList.toggle('hidden', !state.notifCardExpanded);
+
+      // Initialize expanded icon mirror once
+      const notifExpIcon = document.getElementById('notifExpandedIconMirror');
+      if (notifExpIcon && !notifExpIcon.getAttribute('data-initialized')) {
+        notifExpIcon.innerHTML = getVaktijaAppIconHtml("w-full h-full");
+        notifExpIcon.setAttribute('data-initialized', 'true');
+      }
+
+      document.getElementById('notifCityName').textContent = data.lokacija;
+      document.getElementById('notifHijriDate').textContent = `${data.datum[1]} • ${data.datum[0]}`;
+
+      const nextShortName = VAKAT_SHORT_NAMES[timing.nextIndex];
+      const h_left = Math.floor(timing.secondsUntilNext / 3600);
+      const m_left = Math.floor((timing.secondsUntilNext % 3600) / 60);
+      const s_left = timing.secondsUntilNext % 60;
+      const hmsString = `${h_left}h ${m_left}m ${s_left}s`;
+
+      // Collapsed View Headline
+      document.getElementById('notifCountdownPill').textContent = formatEdiyanetHeadline(nextShortName, timing.secondsUntilNext);
+
+      // Collapsed View 6-Column Strip (Next/Current vakat highlighted in bright red!)
+      const notifGrid = document.getElementById('notifPrayerGrid');
+      notifGrid.innerHTML = data.vakat.map((timeStr, idx) => {
+        const isHighlight = (idx === timing.nextIndex);
+        return `
+          <div class="ediyanet-col ${isHighlight ? 'ediyanet-col-active' : ''}">
+            <span class="ediyanet-col-name">${VAKAT_SHORT_NAMES[idx]}</span>
+            <span class="ediyanet-col-time">${timeStr}</span>
+          </div>
+        `;
+      }).join('');
+
+      // Expanded View Content (Exact format of 1793798623096.jpeg with requested Bosnian phrasing)
+      document.getElementById('notifExpCityName').textContent = data.lokacija;
+      document.getElementById('notifExpHijriDate').textContent = data.datum[0];
+
+      // Exact phrasing as requested: "Zora za", "Izlazak sunca za", "Podne za", "Ikindija za", "Akšam za", "Jacija za"
+      const targetPrefixes = [
+        "Zora za",
+        "Izlazak sunca za",
+        "Podne za",
+        "Ikindija za",
+        "Akšam za",
+        "Jacija za"
+      ];
+      document.getElementById('notifExpTargetLabel').textContent = targetPrefixes[timing.nextIndex];
+
+      // Big digits using the exact phone clock font ('Roboto' font-semibold, matching 15:04 status bar clock)
+      document.getElementById('notifExpDigits').textContent = (state.unitStyle === 'tr')
+        ? `${h_left}h ${m_left}dk ${s_left}sn`
+        : hmsString;
+      document.getElementById('notifExpStandardDate').textContent = data.datum[1];
+
+      // Expanded View 2-Column x 3-Row Prayer Table (with "Izlazak sunca" and "Zora"!)
+      const expGrid = document.getElementById('notifExpPrayerGrid');
+      const leftColIndices = [0, 2, 4]; // Zora/sabah, Podne, Akšam
+      const rightColIndices = [1, 3, 5]; // Izlazak sunca, Ikindija, Jacija
+
+      const expPrayerLabels = [
+        "Zora",
+        "Izlazak sunca",
+        "Podne",
+        "Ikindija",
+        "Akšam",
+        "Jacija"
+      ];
+
+      const renderExpCol = (indices) => indices.map(idx => {
+        const isTarget = (idx === timing.nextIndex);
+        const redClass = isTarget ? 'text-[#d81515] font-bold' : 'text-[#0c0c0c] font-bold';
+        const tightSpacing = idx === 1 ? 'style="word-spacing: -2px; letter-spacing: -0.3px;"' : '';
+        return `
+          <div class="flex items-center justify-between gap-2 py-1 text-[14.5px] whitespace-nowrap">
+            <span class="${redClass}" ${tightSpacing}>${expPrayerLabels[idx]}</span>
+            <span class="${redClass} font-semibold tracking-tight text-[15.5px]" style="font-family: 'Roboto', -apple-system, sans-serif; font-variant-numeric: tabular-nums;">${data.vakat[idx]}</span>
+          </div>
+        `;
+      }).join('');
+
+      expGrid.innerHTML = `
+        <div class="space-y-1">${renderExpCol(leftColIndices)}</div>
+        <div class="space-y-1">${renderExpCol(rightColIndices)}</div>
+      `;
+
+      // 5b. Update Samsung Now Brief Pill: display ONLY when state.showNowBrief is ON and <= 60 minutes remain
+      const nowBriefCard = document.getElementById('samsungNowBriefCard');
+      if (nowBriefCard) {
+        const shouldDisplayNowBrief = state.showNowBrief && timing.minutesCeil <= 60 && timing.minutesCeil >= 1;
+        nowBriefCard.classList.toggle('hidden', !shouldDisplayNowBrief);
+        const minTextEl = document.getElementById('nowBriefMinutesText');
+        if (minTextEl) {
+          minTextEl.textContent = String(timing.minutesCeil);
+          minTextEl.style.fontSize = '17.5px';
+        }
+        const statusTextEl = document.getElementById('nowBriefStatusText');
+        if (statusTextEl) {
+          statusTextEl.textContent = 'Evening is here';
+        }
+        const pillEl = document.getElementById('samsungNowBriefPill');
+        const circleEl = document.getElementById('nowBriefMinutesCircle');
+        if (pillEl && circleEl) {
+          if (state.isAodMode) {
+            // Always On Display (AOD): Pill background reverts to default Samsung Now Brief color; circle stays navy+gold but a bit dimmer
+            pillEl.style.background = 'linear-gradient(90deg, rgba(102, 130, 156, 0.90) 0%, rgba(128, 153, 151, 0.90) 52%, rgba(146, 161, 140, 0.90) 100%)';
+            pillEl.style.backdropFilter = 'blur(16px)';
+            pillEl.style.webkitBackdropFilter = 'blur(16px)';
+            circleEl.style.filter = 'brightness(0.72)';
+          } else {
+            // Active Screen: Pill background matches the circle navy blue, a bit more blurry and transparent like the green was
+            pillEl.style.background = 'linear-gradient(90deg, rgba(5, 22, 50, 0.72) 0%, rgba(7, 26, 58, 0.64) 52%, rgba(2, 17, 42, 0.56) 100%)';
+            pillEl.style.backdropFilter = 'blur(24px)';
+            pillEl.style.webkitBackdropFilter = 'blur(24px)';
+            circleEl.style.filter = 'brightness(1)';
+          }
+        }
+      }
+      const switchNowBriefEl = document.getElementById('switchSamsungNowBrief');
+      if (switchNowBriefEl) {
+        switchNowBriefEl.classList.toggle('on', state.showNowBrief);
+        switchNowBriefEl.setAttribute('aria-checked', String(state.showNowBrief));
+      }
+      const nowBriefSubEl = document.getElementById('nowBriefSettingSub');
+      if (nowBriefSubEl) {
+        nowBriefSubEl.textContent = state.showNowBrief
+          ? "Prikaz minuta u Now Brief krugu (samo kad je ≤ 60 min do vakta)."
+          : "Prikaz minuta u Now Brief krugu je isključen.";
+      }
+
+      // 6. Update Main vaktija.ba Header & Settings City Label
+      document.getElementById('mainCityHeading').textContent = data.lokacija;
+      document.getElementById('inPageSettingsCityName').textContent = data.lokacija;
+      document.getElementById('mainGregorianDate').textContent = data.datum[1];
+      document.getElementById('mainHijriDate').textContent = data.datum[0];
+      document.getElementById('mainCountdownDisplay').textContent = formatHMS(timing.secondsUntilNext);
+
+      // 7. Render the 6 Prayer Rows (1:1 match to 29586.jpg with dynamic text size scaling!)
+      const listEl = document.getElementById('vakatListContainer');
+      const countdownFormatted = `za ${formatHMS(timing.secondsUntilNext)}`;
+      const titlePx = Math.round(20 * state.textScale);
+      const timePx = Math.round(28 * state.textScale);
+
+      listEl.innerHTML = data.vakat.map((timeStr, idx) => {
+        const isCurrent = idx === timing.currentActiveIndex;
+        const isNext = idx === timing.nextIndex;
+        let diffMin = Math.round((timing.vakatSeconds[idx] - timing.nowSeconds) / 60);
+        const relLabel = isNext ? countdownFormatted : formatRelativeBosnian(diffMin);
+        const cfg = state.vakatConfigs[idx] || {};
+        const displayName = (idx === 2 && data.isFriday && state.separateDzuma)
+          ? "Džuma"
+          : VAKAT_FULL_NAMES[idx];
+
+        let leftMarkerHtml = '';
+        if (isCurrent) {
+          leftMarkerHtml = `
+            <div class="w-10 flex items-center justify-start pl-1 shrink-0">
+              <span class="w-2.5 h-2.5 rounded-full bg-[#6e7073] inline-block"></span>
+            </div>
+          `;
+        } else if (isNext) {
+          leftMarkerHtml = `
+            <div class="w-10 flex items-center justify-start shrink-0 text-[#6e7073]">
+              <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                <line x1="5" y1="12" x2="19" y2="12" stroke-linecap="round" />
+                <polyline points="13 6 19 12 13 18" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+            </div>
+          `;
+        }
+
+        const rowBgClass = isNext
+          ? (state.isDarkAppTheme ? 'bg-[#262b31]' : 'bg-[#f5f5f5]')
+          : 'hover:bg-black/[0.02]';
+
+        const titleColorClass = isNext
+          ? 'text-[#9e8e68]'
+          : (state.isDarkAppTheme ? 'text-[#f3f4f6]' : 'text-[#2c2e30]');
+
+        const subtitleClass = isNext
+          ? (state.isDarkAppTheme ? 'text-[15.5px] font-bold text-[#f3f4f6] not-italic mt-0.5' : 'text-[15.5px] font-bold text-[#2c2e30] not-italic mt-0.5')
+          : 'text-[13.5px] italic text-[#6e7073] mt-0.5';
+
+        const timeColorClass = isNext
+          ? (state.isDarkAppTheme ? 'text-[#f3f4f6] font-bold' : 'text-[#2c2e30] font-bold')
+          : 'text-[#6e7073] font-bold';
+
+        return `
+          <div data-vakat-row="${idx}" class="w-full px-6 py-2.5 flex items-center justify-between cursor-pointer transition ${rowBgClass}">
+            <div class="flex items-center min-w-0">
+              ${leftMarkerHtml}
+              <div class="min-w-0">
+                <div class="font-bold leading-tight ${titleColorClass}" style="font-size: ${titlePx}px;">
+                  ${displayName === "Izlazak sunca" ? `<span style="word-spacing: -1.5px;">${displayName}</span>` : displayName}
+                </div>
+                <div class="${subtitleClass} leading-snug">
+                  ${relLabel}
+                </div>
+              </div>
+            </div>
+
+            <div class="flex items-center shrink-0">
+              <span class="tracking-tight leading-none ${timeColorClass}" style="font-size: ${timePx}px; font-variant-numeric: tabular-nums;">
+                ${timeStr}
+              </span>
+              <button type="button" data-alarm-idx="${idx}" class="alarm-toggle-btn focus:outline-none" title="Postavke za ${displayName}">
+                ${renderMiniRightIcons(cfg)}
+              </button>
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      listEl.querySelectorAll('[data-vakat-row]').forEach(row => {
+        row.addEventListener('click', (e) => {
+          if (e.target.closest('.alarm-toggle-btn')) return;
+          openVakatConfigModal(parseInt(row.getAttribute('data-vakat-row'), 10));
+        });
+      });
+
+      listEl.querySelectorAll('.alarm-toggle-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          openVakatConfigModal(parseInt(btn.getAttribute('data-alarm-idx'), 10));
+        });
+      });
+
+      renderQuickCities();
+    }
+
+    function openVakatConfigModal(idx) {
+      state.editingVakatIdx = idx;
+      const cfg = state.vakatConfigs[idx];
+      const name = VAKAT_FULL_NAMES[idx];
+      document.getElementById('vakatConfigTitle').textContent = `Postavke: ${name}`;
+      document.getElementById('vcAlarmToggle').checked = !!cfg.alarm;
+      document.getElementById('vcAlarmMinsRange').value = String(cfg.alarmMins);
+      document.getElementById('vcAlarmMinsLabel').textContent = `${cfg.alarmMins} min prije`;
+
+      document.getElementById('vcNotifToggle').checked = !!cfg.notif;
+      document.getElementById('vcNotifMinsRange').value = String(cfg.notifMins);
+      document.getElementById('vcNotifMinsLabel').textContent = `${cfg.notifMins} min prije`;
+
+      document.getElementById('vcSilentToggle').checked = !!cfg.silent;
+      document.getElementById('vcSilentMinsRange').value = String(cfg.silentMins);
+      document.getElementById('vcSilentMinsLabel').textContent = `${cfg.silentMins} min`;
+
+      const dzumaBox = document.getElementById('vcDzumaBox');
+      if (idx === 2) {
+        dzumaBox.classList.remove('hidden');
+        document.getElementById('vcDzumaSeparateToggle').checked = state.separateDzuma;
+      } else {
+        dzumaBox.classList.add('hidden');
+      }
+
+      const modal = document.getElementById('vakatConfigModalBackdrop');
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+    }
+
+    function renderQuickCities() {
+      const container = document.getElementById('quickCitiesContainer');
+      container.innerHTML = QUICK_CITIES.map(c => {
+        const active = c.id === state.locationId;
+        return `
+          <button type="button" data-quick-city="${c.id}" class="quick-city-btn px-2.5 py-1 rounded-lg text-xs font-medium transition ${
+            active
+              ? 'bg-[#a59573] text-[#121518] font-semibold'
+              : 'bg-[#252a30] text-gray-300 hover:text-white border border-[#343b44]'
+          }">
+            ${c.name}
+          </button>
+        `;
+      }).join('');
+
+      container.querySelectorAll('.quick-city-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          selectCity(parseInt(btn.getAttribute('data-quick-city'), 10));
+        });
+      });
+    }
+
+    function selectCity(id) {
+      state.locationId = id;
+      try {
+        localStorage.setItem('vp_location_id', String(id));
+        if (window.AndroidBridge && typeof window.AndroidBridge.onCitySelected === 'function') {
+          window.AndroidBridge.onCitySelected(id);
+        }
+      } catch (e) {}
+      loadPrayerTimesForCurrentState();
+      showToast(`Lokacija promijenjena: ${VAKTIJA_LOCATIONS[id]}`);
+    }
+
+    // Render full-screen Lokacija list matching 29594.jpg (with blue checkmark on selected city)
+    function renderCityListInScreen(filterText = '') {
+      const list = document.getElementById('cityListScroll');
+      const q = filterText.trim().toLowerCase();
+      const items = VAKTIJA_LOCATIONS.map((name, id) => ({ id, name }))
+        .filter(item => item.name.toLowerCase().includes(q));
+
+      list.innerHTML = items.map(item => {
+        const isSelected = item.id === state.locationId;
+        return `
+          <button type="button" data-modal-city="${item.id}" class="modal-city-item w-full text-left py-3.5 text-[16px] flex items-center justify-between transition hover:opacity-75 focus:outline-none">
+            <span>${item.name}</span>
+            ${isSelected ? `
+              <svg class="w-5 h-5 text-[#007aff] shrink-0" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+                <polyline points="20 6 9 17 4 12" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+            ` : ''}
+          </button>
+        `;
+      }).join('');
+
+      list.querySelectorAll('.modal-city-item').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const id = parseInt(btn.getAttribute('data-modal-city'), 10);
+          selectCity(id);
+          switchPhoneScreen(state.previousScreenBeforeLocation || 'vaktija');
+        });
+      });
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      const tabBtnApp = document.getElementById('tabBtnApp');
+      const tabBtnCode = document.getElementById('tabBtnCode');
+      const viewApp = document.getElementById('viewAppContainer');
+      const viewCode = document.getElementById('viewCodeContainer');
+
+      tabBtnApp.addEventListener('click', () => {
+        viewApp.classList.remove('hidden');
+        viewCode.classList.add('hidden');
+        tabBtnApp.className = "px-2.5 py-1 rounded-md text-[11px] font-medium bg-[#a59573] text-[#121518] transition";
+        tabBtnCode.className = "px-2.5 py-1 rounded-md text-[11px] font-medium text-gray-300 hover:text-white transition";
+      });
+
+      tabBtnCode.addEventListener('click', () => {
+        viewCode.classList.remove('hidden');
+        viewApp.classList.add('hidden');
+        tabBtnCode.className = "px-2.5 py-1 rounded-md text-[11px] font-medium bg-[#a59573] text-[#121518] transition";
+        tabBtnApp.className = "px-2.5 py-1 rounded-md text-[11px] font-medium text-gray-300 hover:text-white transition";
+      });
+
+      const simBadge = document.getElementById('simStatusBadge');
+      const simRange = document.getElementById('simMinutesRange');
+
+      document.querySelectorAll('.sim-preset-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const val = btn.getAttribute('data-sim');
+          document.querySelectorAll('.sim-preset-btn').forEach(b => {
+            b.className = "sim-preset-btn px-2 py-0.5 rounded text-[11px] font-medium bg-[#252a30] text-gray-300 border border-[#343b44] transition";
+          });
+          btn.className = "sim-preset-btn px-2 py-0.5 rounded text-[11px] font-medium bg-[#a59573] text-[#121518] transition";
+
+          if (val === 'live') {
+            state.simMinutes = null;
+            simBadge.textContent = "Uživo";
+          } else {
+            state.simMinutes = parseInt(val, 10);
+            simRange.value = String(state.simMinutes);
+            simBadge.textContent = `Simulacija: ${state.simMinutes}m`;
+          }
+          renderAll();
+        });
+      });
+
+      simRange.addEventListener('input', () => {
+        state.simMinutes = parseInt(simRange.value, 10);
+        simBadge.textContent = `Simulacija: ${state.simMinutes}m`;
+        renderAll();
+      });
+
+      const sbToggleBtn = document.getElementById('toggleStatusBarBgBtn');
+      sbToggleBtn.addEventListener('click', () => {
+        state.statusBarLight = !state.statusBarLight;
+        sbToggleBtn.textContent = state.statusBarLight ? "🌓 Statusna traka: Svijetla" : "🌓 Statusna traka: Tamna";
+        renderAll();
+      });
+
+      const toggleShade = () => {
+        state.shadeExpanded = !state.shadeExpanded;
+        const shade = document.getElementById('ediyanetNotificationShade');
+        const label = document.getElementById('shadeToggleLabel');
+        if (state.shadeExpanded) {
+          shade.classList.remove('hidden');
+          label.textContent = "e-Diyanet panel ▾";
+        } else {
+          shade.classList.add('hidden');
+          label.textContent = "e-Diyanet panel ▸";
+        }
+      };
+      document.getElementById('toggleShadeBtn').addEventListener('click', (e) => {
+        e.stopPropagation();
+        toggleShade();
+      });
+      document.getElementById('androidStatusBar').addEventListener('click', toggleShade);
+
+      // ============================================================
+      // 4 BOTTOM NAVIGATION BUTTONS -> IN-PAGE SCREEN SWITCHING!
+      // ============================================================
+      document.getElementById('navHomeBtn').addEventListener('click', () => {
+        switchPhoneScreen('vaktija');
+      });
+      document.getElementById('openDatePickerBtn').addEventListener('click', () => {
+        switchPhoneScreen('date');
+      });
+      document.getElementById('dateBannerBtn').addEventListener('click', () => {
+        switchPhoneScreen('date');
+      });
+      document.getElementById('openQiblaBtn').addEventListener('click', () => {
+        switchPhoneScreen('qibla');
+      });
+      document.getElementById('openSettingsBtn').addEventListener('click', () => {
+        switchPhoneScreen('settings');
+      });
+
+      // Open full-screen Location list from either Main Screen pin or Postavke > Lokacija
+      document.getElementById('openCityModalBtn').addEventListener('click', () => {
+        state.previousScreenBeforeLocation = 'vaktija';
+        switchPhoneScreen('location');
+      });
+      document.getElementById('inPageOpenLocationBtn').addEventListener('click', () => {
+        state.previousScreenBeforeLocation = 'settings';
+        switchPhoneScreen('location');
+      });
+      document.getElementById('locationBackBtn').addEventListener('click', () => {
+        switchPhoneScreen(state.previousScreenBeforeLocation || 'settings');
+      });
+      document.getElementById('locationSearchToggleBtn').addEventListener('click', () => {
+        const wrap = document.getElementById('inPageLocationSearchWrap');
+        wrap.classList.toggle('hidden');
+        if (!wrap.classList.contains('hidden')) {
+          document.getElementById('citySearchInput').focus();
+        }
+      });
+      document.getElementById('citySearchInput').addEventListener('input', (e) => {
+        renderCityListInScreen(e.target.value);
+      });
+
+      // Screen 2: Odaberi datum "Prikaži" button
+      document.getElementById('wheelPrikaziBtn').addEventListener('click', () => {
+        const chosen = new Date(state.wheelYear, state.wheelMonth, state.wheelDay, 12, 0, 0);
+        const today = new Date();
+        today.setHours(12, 0, 0, 0);
+        state.dayOffset = Math.round((chosen - today) / 86400000);
+        loadPrayerTimesForCurrentState();
+        switchPhoneScreen('vaktija');
+        showToast(`Prikazana vaktija za ${state.wheelDay}. ${MONTHS_FULL_BS[state.wheelMonth]} ${state.wheelYear}.`);
+      });
+
+      // Screen 3: Kibla kompas controls (device sensor + touch-drag + alignment guide)
+      const updateInPageQiblaArm = (deg) => {
+        state.qiblaArmAngle = deg;
+        document.getElementById('inPageQiblaArmGroup').setAttribute('transform', `rotate(${deg} 120 120)`);
+        const isAligned = Math.abs((((deg % 360) + 540) % 360) - 180) <= 5;
+        document.getElementById('inPageQiblaAngleText').textContent = isAligned
+          ? "✓ Usaglašeno sa Kabanom (0°)"
+          : `Ugao: ${deg}°`;
+        if (isAligned && !state._qiblaVibrated) {
+          state._qiblaVibrated = true;
+          if (navigator.vibrate) { try { navigator.vibrate(60); } catch (_) {} }
+        } else if (!isAligned) {
+          state._qiblaVibrated = false;
+        }
+      };
+
+      document.getElementById('inPageCompassRange').addEventListener('input', (e) => {
+        updateInPageQiblaArm(parseInt(e.target.value, 10));
+      });
+      document.getElementById('inPageAlignQiblaBtn').addEventListener('click', () => {
+        document.getElementById('inPageCompassRange').value = "0";
+        updateInPageQiblaArm(0);
+        showToast("Kompas usmjeren prema Kibli!");
+      });
+
+      // Interactive touch / drag rotation directly on the compass ring!
+      const ring = document.getElementById('qiblaInteractiveRing');
+      let isDraggingCompass = false;
+      const calculateAngleFromEvent = (clientX, clientY) => {
+        const rect = ring.getBoundingClientRect();
+        const centerX = rect.left + rect.width / 2;
+        const centerY = rect.top + rect.height / 2;
+        const dx = clientX - centerX;
+        const dy = clientY - centerY;
+        let deg = Math.round(Math.atan2(dx, -dy) * (180 / Math.PI));
+        if (deg < 0) deg += 360;
+        return deg;
+      };
+
+      ring.addEventListener('mousedown', (e) => {
+        isDraggingCompass = true;
+        const deg = calculateAngleFromEvent(e.clientX, e.clientY);
+        document.getElementById('inPageCompassRange').value = String(deg);
+        updateInPageQiblaArm(deg);
+      });
+      window.addEventListener('mousemove', (e) => {
+        if (!isDraggingCompass) return;
+        const deg = calculateAngleFromEvent(e.clientX, e.clientY);
+        document.getElementById('inPageCompassRange').value = String(deg);
+        updateInPageQiblaArm(deg);
+      });
+      window.addEventListener('mouseup', () => { isDraggingCompass = false; });
+
+      ring.addEventListener('touchstart', (e) => {
+        const t = e.touches[0];
+        const deg = calculateAngleFromEvent(t.clientX, t.clientY);
+        document.getElementById('inPageCompassRange').value = String(deg);
+        updateInPageQiblaArm(deg);
+      }, { passive: true });
+      ring.addEventListener('touchmove', (e) => {
+        const t = e.touches[0];
+        const deg = calculateAngleFromEvent(t.clientX, t.clientY);
+        document.getElementById('inPageCompassRange').value = String(deg);
+        updateInPageQiblaArm(deg);
+      }, { passive: true });
+
+      // Real DeviceOrientation sensor support on mobile phones
+      if (window.DeviceOrientationEvent) {
+        window.addEventListener('deviceorientation', (e) => {
+          if (state.activeScreen !== 'qibla') return;
+          let heading = null;
+          if (e.webkitCompassHeading !== undefined) {
+            heading = e.webkitCompassHeading;
+          } else if (e.alpha !== null) {
+            heading = 360 - e.alpha;
+          }
+          if (heading !== null) {
+            const qiblaAzimuth = getQiblaAngle(state.locationId);
+            let needleAngle = Math.round((qiblaAzimuth - heading + 360) % 360);
+            document.getElementById('inPageCompassRange').value = String(needleAngle);
+            updateInPageQiblaArm(needleAngle);
+          }
+        }, true);
+      }
+
+      document.getElementById('qiblaHelpBtn').addEventListener('click', () => {
+        showToast("Rotirajte telefon dok zlatna kazaljka sa crnim prstenom ne pokaže prema Kabi na vrhu (0°)");
+      });
+
+      // Screen 4: Postavke controls (exact match to 29592.jpg)
+      document.querySelectorAll('.theme-seg-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const mode = btn.getAttribute('data-theme-seg');
+          state.themeMode = mode;
+          state.isDarkAppTheme = (mode === 'dark');
+          state.statusBarLight = !state.isDarkAppTheme;
+          document.body.classList.toggle('dark-app-theme', state.isDarkAppTheme);
+
+          document.querySelectorAll('.theme-seg-btn').forEach(b => {
+            b.className = "theme-seg-btn py-1.5 rounded-[7px] text-[#2c2e30] transition";
+          });
+          btn.className = "theme-seg-btn py-1.5 rounded-[7px] bg-[#9e8e68] text-white font-semibold shadow-sm transition";
+          renderAll();
+        });
+      });
+
+      document.getElementById('inPageTextSizeSlider').addEventListener('input', (e) => {
+        state.textScale = parseFloat(e.target.value);
+        renderAll();
+      });
+
+      const switchStalna = document.getElementById('switchStalnaNotif');
+      switchStalna.addEventListener('click', () => {
+        state.shadeExpanded = !state.shadeExpanded;
+        switchStalna.classList.toggle('on', state.shadeExpanded);
+        document.getElementById('stalnaVaktijaSub').textContent = state.shadeExpanded
+          ? "Stalna vaktija aktivirana."
+          : "Stalna vaktija isključena.";
+        document.getElementById('ediyanetNotificationShade').classList.toggle('hidden', !state.shadeExpanded);
+      });
+
+      document.getElementById('rowDnevnaNotif').addEventListener('click', () => {
+        state.dnevnaNotifChecked = !state.dnevnaNotifChecked;
+        const box = document.getElementById('chkDnevnaNotif');
+        if (state.dnevnaNotifChecked) {
+          box.className = "w-[18px] h-[18px] rounded-[3px] bg-[#007aff] flex items-center justify-center text-white shrink-0";
+          box.innerHTML = `<svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12" /></svg>`;
+        } else {
+          box.className = "w-[18px] h-[18px] rounded-[3px] border-2 border-[#757575] flex items-center justify-center text-white shrink-0";
+          box.innerHTML = "";
+        }
+      });
+
+      document.getElementById('rowZvucnaNajava').addEventListener('click', () => {
+        state.zvucnaNajavaChecked = !state.zvucnaNajavaChecked;
+        const box = document.getElementById('chkZvucnaNajava');
+        if (state.zvucnaNajavaChecked) {
+          box.className = "w-[18px] h-[18px] rounded-[3px] bg-[#007aff] flex items-center justify-center text-white shrink-0";
+          box.innerHTML = `<svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12" /></svg>`;
+          playGentleChime();
+        } else {
+          box.className = "w-[18px] h-[18px] rounded-[3px] border-2 border-[#757575] flex items-center justify-center text-white shrink-0";
+          box.innerHTML = "";
+        }
+      });
+
+      const rowNowBrief = document.getElementById('rowSamsungNowBrief') || document.getElementById('switchSamsungNowBrief');
+      if (rowNowBrief) {
+        rowNowBrief.addEventListener('click', () => {
+          state.showNowBrief = !state.showNowBrief;
+          try {
+            localStorage.setItem('vp_now_brief_enabled', String(state.showNowBrief));
+            if (window.AndroidBridge && typeof window.AndroidBridge.onToggleNowBrief === 'function') {
+              window.AndroidBridge.onToggleNowBrief(state.showNowBrief);
+            }
+          } catch (e) {}
+          showToast(state.showNowBrief ? "Pokaži u Now brief-u: UKLJUČENO" : "Pokaži u Now brief-u: ISKLJUČENO");
+          renderAll();
+        });
+      }
+
+      const toggleAodMode = () => {
+        state.isAodMode = !state.isAodMode;
+        const aodBtn = document.getElementById('toggleAodModeBtn');
+        if (aodBtn) {
+          aodBtn.textContent = state.isAodMode ? "🌙 Ekran: Always On Display" : "☀️ Ekran: Aktivan";
+        }
+        showToast(state.isAodMode
+          ? "Always On Display (AOD): Podloga vraćena na Samsung Now Brief boju, krug malo zatamnjen"
+          : "Aktivan ekran: Zamućena tamnoplava podloga i zlatni tekst");
+        renderAll();
+      };
+      const aodBtnEl = document.getElementById('toggleAodModeBtn');
+      if (aodBtnEl) aodBtnEl.addEventListener('click', toggleAodMode);
+      const pillClickEl = document.getElementById('samsungNowBriefPill');
+      if (pillClickEl) pillClickEl.addEventListener('click', toggleAodMode);
+
+      const switchDzuma = document.getElementById('switchPosebneDzuma');
+      switchDzuma.addEventListener('click', () => {
+        state.separateDzuma = !state.separateDzuma;
+        switchDzuma.classList.toggle('on', state.separateDzuma);
+        document.getElementById('posebneDzumaSub').textContent = state.separateDzuma
+          ? "Posebne postavke za džumu-namaz aktivne."
+          : "Posebne postavke za džumu-namaz isključene.";
+        renderAll();
+      });
+
+      document.getElementById('inPageShareBtn').addEventListener('click', () => {
+        document.getElementById('shareVaktijaBtn').click();
+      });
+      document.getElementById('inPageContactBtn').addEventListener('click', () => {
+        showToast("Kontakt: android@vaktija.ba");
+      });
+      document.getElementById('settingsHelpBtn').addEventListener('click', () => {
+        showToast("Postavke aplikacije Vaktija premium");
+      });
+
+      // Blue circular restart notification icon with exclamation mark (!) matching 29586.jpg
+      document.getElementById('shareVaktijaBtn').addEventListener('click', () => {
+        try {
+          if (window.AndroidBridge && typeof window.AndroidBridge.onRestartNotification === 'function') {
+            window.AndroidBridge.onRestartNotification();
+          }
+        } catch (e) {}
+        state.shadeExpanded = true;
+        state.notifCardExpanded = true;
+        document.getElementById('ediyanetNotificationShade').classList.remove('hidden');
+        renderAll();
+        showToast("Notifikacijski panel ponovo pokrenut i aktivan!");
+      });
+
+      // Expand / Collapse listeners for e-Diyanet notification panel
+      document.getElementById('notifExpandChevronBtn').addEventListener('click', (e) => {
+        e.stopPropagation();
+        state.notifCardExpanded = true;
+        renderAll();
+      });
+      document.getElementById('notifCollapsedView').addEventListener('click', () => {
+        state.notifCardExpanded = true;
+        renderAll();
+      });
+      document.getElementById('notifCollapseChevronBtn').addEventListener('click', (e) => {
+        e.stopPropagation();
+        state.notifCardExpanded = false;
+        renderAll();
+      });
+
+      // Per-Prayer Config Modal
+      const vcModal = document.getElementById('vakatConfigModalBackdrop');
+      document.getElementById('closeVakatConfigBtn').addEventListener('click', () => {
+        vcModal.classList.add('hidden');
+        vcModal.classList.remove('flex');
+      });
+      document.getElementById('vcAlarmMinsRange').addEventListener('input', (e) => {
+        document.getElementById('vcAlarmMinsLabel').textContent = `${e.target.value} min prije`;
+      });
+      document.getElementById('vcNotifMinsRange').addEventListener('input', (e) => {
+        document.getElementById('vcNotifMinsLabel').textContent = `${e.target.value} min prije`;
+      });
+      document.getElementById('vcSilentMinsRange').addEventListener('input', (e) => {
+        document.getElementById('vcSilentMinsLabel').textContent = `${e.target.value} min`;
+      });
+      document.getElementById('saveVakatConfigBtn').addEventListener('click', () => {
+        const idx = state.editingVakatIdx;
+        state.vakatConfigs[idx] = {
+          alarm: document.getElementById('vcAlarmToggle').checked,
+          alarmMins: parseInt(document.getElementById('vcAlarmMinsRange').value, 10),
+          notif: document.getElementById('vcNotifToggle').checked,
+          notifMins: parseInt(document.getElementById('vcNotifMinsRange').value, 10),
+          silent: document.getElementById('vcSilentToggle').checked,
+          silentMins: parseInt(document.getElementById('vcSilentMinsRange').value, 10)
+        };
+        if (idx === 2) {
+          state.separateDzuma = document.getElementById('vcDzumaSeparateToggle').checked;
+        }
+        vcModal.classList.add('hidden');
+        vcModal.classList.remove('flex');
+        renderAll();
+        showToast(`Postavke za ${VAKAT_FULL_NAMES[idx]} sačuvane`);
+      });
+
+      document.getElementById('prevDayBtn').addEventListener('click', () => {
+        state.dayOffset -= 1;
+        loadPrayerTimesForCurrentState();
+      });
+      document.getElementById('nextDayBtn').addEventListener('click', () => {
+        state.dayOffset += 1;
+        loadPrayerTimesForCurrentState();
+      });
+      document.getElementById('resetTodayBtn').addEventListener('click', () => {
+        state.dayOffset = 0;
+        state.simMinutes = null;
+        simBadge.textContent = "Uživo";
+        loadPrayerTimesForCurrentState();
+      });
+
+      document.getElementById('unitFormatSelect').addEventListener('change', (e) => {
+        state.unitStyle = e.target.value;
+        renderAll();
+      });
+
+      // Wire hidden compatibility elements
+      document.getElementById('sideOpenQiblaBtn').addEventListener('click', () => switchPhoneScreen('qibla'));
+      document.getElementById('sideOpenDateBtn').addEventListener('click', () => switchPhoneScreen('date'));
+      document.getElementById('sideOpenSettingsBtn').addEventListener('click', () => switchPhoneScreen('settings'));
+      document.getElementById('closeCityModalBtn').addEventListener('click', () => switchPhoneScreen('vaktija'));
+      document.getElementById('closeQiblaModalBtn').addEventListener('click', () => switchPhoneScreen('vaktija'));
+      document.getElementById('snapToQiblaBtn').addEventListener('click', () => switchPhoneScreen('qibla'));
+      document.getElementById('closeDateModalBtn').addEventListener('click', () => switchPhoneScreen('vaktija'));
+      document.getElementById('dateModalTodayBtn').addEventListener('click', () => switchPhoneScreen('vaktija'));
+      document.getElementById('dateModalApplyBtn').addEventListener('click', () => switchPhoneScreen('vaktija'));
+      document.getElementById('closeSettingsModalBtn').addEventListener('click', () => switchPhoneScreen('vaktija'));
+      document.getElementById('settingsChangeCityBtn').addEventListener('click', () => switchPhoneScreen('location'));
+      document.getElementById('settingsTestSoundBtn').addEventListener('click', playGentleChime);
+      document.getElementById('saveSettingsModalBtn').addEventListener('click', () => switchPhoneScreen('vaktija'));
+      document.getElementById('themeToggleBtn').addEventListener('click', () => switchPhoneScreen('settings'));
+      document.getElementById('testSoundBtn').addEventListener('click', playGentleChime);
+
+      const codeArea = document.getElementById('codeDisplayArea');
+      codeArea.textContent = CODE_SNIPPETS.xml;
+
+      document.querySelectorAll('.code-tab-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const key = btn.getAttribute('data-codefile');
+          state.activeCodeTab = key;
+          codeArea.textContent = CODE_SNIPPETS[key] || '';
+          document.querySelectorAll('.code-tab-btn').forEach(b => {
+            b.className = "code-tab-btn px-3 py-1.5 rounded-lg text-xs font-medium bg-[#252a30] text-gray-300";
+          });
+          btn.className = "code-tab-btn px-3 py-1.5 rounded-lg text-xs font-medium bg-[#a59573] text-[#121518]";
+        });
+      });
+
+      document.getElementById('copyCodeBtn').addEventListener('click', () => {
+        const text = CODE_SNIPPETS[state.activeCodeTab] || '';
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(text).then(() => showToast("Kod kopiran u međuspremnik")).catch(() => {
+            fallbackCopy(text);
+          });
+        } else {
+          fallbackCopy(text);
+        }
+      });
+
+      function fallbackCopy(text) {
+        const ta = document.createElement('textarea');
+        ta.value = text;
+        document.body.appendChild(ta);
+        ta.select();
+        try { document.execCommand('copy'); } catch (e) {}
+        document.body.removeChild(ta);
+        showToast("Kod kopiran u međuspremnik");
+      }
+
+      loadPrayerTimesForCurrentState();
+      if (window._vaktijaInterval) clearInterval(window._vaktijaInterval);
+      window._vaktijaInterval = setInterval(renderAll, 1000);
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="100dp"
+    android:height="100dp"
+    android:viewportWidth="100"
+    android:viewportHeight="100">
+    <!-- Exact Samsung One UI 9 Squircle in Vaktija.ba Gold (#A59573) -->
+    <path
+        android:fillColor="#A59573"
+        android:pathData="M50,0 C83.5,0 100,16.5 100,50 C100,83.5 83.5,100 50,100 C16.5,100 0,83.5 0,50 C0,16.5 16.5,0 50,0 Z" />
+    <!-- White Open Circular Arc -->
+    <path
+        android:fillColor="#00000000"
+        android:strokeColor="#FFFFFF"
+        android:strokeWidth="6.4"
+        android:strokeLineCap="round"
+        android:pathData="M67.6,31.3 A26.5,26.5 0 1,1 35.1,26.8" />
+    <!-- White V-Shaped Clock Hands -->
+    <path
+        android:fillColor="#00000000"
+        android:strokeColor="#FFFFFF"
+        android:strokeWidth="7.0"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round"
+        android:pathData="M33.3,29.3 L52.6,51.1 L59.4,21.4" />
+    <!-- White Top Dot -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M46.3,25.4 m-3.9,0 a3.9,3.9 0 1,1 7.8,0 a3.9,3.9 0 1,1 -7.8,0" />
+</vector>

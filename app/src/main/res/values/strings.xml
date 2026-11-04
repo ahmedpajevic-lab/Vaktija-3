@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Vaktija premium</string>
+    <string name="notification_channel_name">Vaktija Premium e-Diyanet Panel</string>
+    <string name="notification_channel_desc">Trajni prikaz namaskih vremena u e-Diyanet formatu i Vaktija.ba ikonica / 60-min odbrojavanje</string>
+</resources>
