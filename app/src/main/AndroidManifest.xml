@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="ba.vaktija.premium">
+    package="ba.vaktija.nova">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
@@ -15,8 +15,8 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@drawable/ic_vaktija_launcher"
-        android:roundIcon="@drawable/ic_vaktija_launcher"
+        android:icon="@mipmap/ic_launcher"
+        android:roundIcon="@mipmap/ic_launcher_round"
         android:label="Vaktija premium"
         android:supportsRtl="true"
         android:theme="@style/Theme.VaktijaPremium">
@@ -42,6 +42,10 @@
                 android:value="Prikaz namaskih vremena u e-Diyanet obavijesnom panelu i odbrojavanja minuta u statusnoj traci" />
         </service>
 
+        <meta-data
+            android:name="com.samsung.android.support.ongoing_activity"
+            android:value="true" />
+
         <receiver
             android:name=".receiver.BootAndVakatReceiver"
             android:enabled="true"
@@ -49,7 +53,7 @@
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
                 <action android:name="android.intent.action.MY_PACKAGE_REPLACED" />
-                <action android:name="ba.vaktija.premium.ACTION_MINUTE_UPDATE" />
+                <action android:name="ba.vaktija.nova.ACTION_MINUTE_UPDATE" />
             </intent-filter>
         </receiver>
 

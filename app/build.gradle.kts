@@ -3,16 +3,33 @@ plugins {
     id("org.jetbrains.kotlin.android")
 }
 
+// Automatically heal nested app/app/ upload and remove legacy Nov 4 package/drawable files
+val nestedAppSrc = file("app/src")
+if (nestedAppSrc.exists()) {
+    nestedAppSrc.copyRecursively(file("src"), overwrite = true)
+    file("app").deleteRecursively()
+}
+file("src/main/java/ba/vaktija/premium").let { if (it.exists()) it.deleteRecursively() }
+file("src/main/java/ba/vaktija/nova/ui").let { if (it.exists()) it.deleteRecursively() }
+listOf(
+    "src/main/res/drawable/ic_launcher_foreground.xml",
+    "src/main/res/drawable/ic_vaktija_launcher.xml",
+    "src/main/res/drawable/ic_stat_vaktija_default.xml"
+).forEach { rel ->
+    val f = file(rel)
+    if (f.exists()) f.delete()
+}
+
 android {
-    namespace = "ba.vaktija.premium"
+    namespace = "ba.vaktija.nova"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "ba.vaktija.premium"
+        applicationId = "ba.vaktija.nova"
         minSdk = 26
         targetSdk = 34
-        versionCode = 3
-        versionName = "3.0.0"
+        versionCode = 1
+        versionName = "1.0.0"
     }
 
     buildTypes {

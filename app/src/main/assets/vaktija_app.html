@@ -65,10 +65,11 @@
     }
     .status-bar-light .status-icon-box.countdown-active,
     .adaptive-light-preview .status-icon-box.countdown-active {
-      height: 16px;
+      width: 18px;
+      height: 18px;
       min-width: 18px;
-      padding: 0 2.5px;
-      border-radius: 3.5px;
+      padding: 0 2px;
+      border-radius: 4px;
       background-color: #4a4e52;
       color: #ffffff;
       font-weight: 800;
@@ -78,10 +79,11 @@
     }
     .status-bar-dark .status-icon-box.countdown-active,
     .adaptive-dark-preview .status-icon-box.countdown-active {
-      height: 16px;
+      width: 18px;
+      height: 18px;
       min-width: 18px;
-      padding: 0 2.5px;
-      border-radius: 3.5px;
+      padding: 0 2px;
+      border-radius: 4px;
       background-color: #ffffff;
       color: #111417;
       font-weight: 800;
@@ -105,6 +107,28 @@
       box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
       color: #0e0e0e;
       -webkit-font-smoothing: antialiased;
+      transition: background-color 0.2s ease, color 0.2s ease;
+    }
+    .notif-night-mode .ediyanet-pill-panel,
+    .notif-night-mode #notifExpandedView {
+      background-color: rgba(34, 44, 42, 0.92) !important;
+      color: #ffffff !important;
+    }
+    .notif-night-mode .ediyanet-headline,
+    .notif-night-mode .ediyanet-col,
+    .notif-night-mode #notifExpTargetLabel,
+    .notif-night-mode #notifExpDigits,
+    .notif-night-mode #notifExpandedTitleText {
+      color: #ffffff !important;
+    }
+    .notif-night-mode #notifExpCityName,
+    .notif-night-mode #notifExpHijriDate,
+    .notif-night-mode #notifExpStandardDate {
+      color: #d8dce0 !important;
+    }
+    .notif-night-mode .ediyanet-col.ediyanet-col-active .ediyanet-col-name,
+    .notif-night-mode .ediyanet-col.ediyanet-col-active .ediyanet-col-time {
+      color: #ff453a !important;
     }
     .ediyanet-left-squircle {
       width: 40px;
@@ -304,6 +328,271 @@
       border: none !important;
     }
   </style>
+<style id="offlineTailwindBundle">
+*, ::before, ::after { box-sizing: border-box; border-width: 0; border-style: solid; border-color: #e5e7eb; }
+    html, body { margin: 0; padding: 0; width: 100%; height: 100%; font-family: 'Roboto', -apple-system, BlinkMacSystemFont, sans-serif; -webkit-tap-highlight-color: transparent; }
+    button, input, select { font-family: inherit; font-size: 100%; margin: 0; padding: 0; background-color: transparent; color: inherit; }
+    h1, h2, h3, p { margin: 0; }
+    .hidden { display: none !important; }
+    .flex { display: flex; }
+    .inline-block { display: inline-block; }
+    .grid { display: grid; }
+    .flex-1 { flex: 1 1 0%; }
+    .flex-col { flex-direction: column; }
+    .flex-wrap { flex-wrap: wrap; }
+    .shrink-0 { flex-shrink: 0; }
+    .min-w-0 { min-width: 0px; }
+    .min-h-screen { min-height: 100vh; }
+    .items-center { align-items: center; }
+    .items-end { align-items: flex-end; }
+    .justify-start { justify-content: flex-start; }
+    .justify-end { justify-content: flex-end; }
+    .justify-center { justify-content: center; }
+    .justify-between { justify-content: space-between; }
+    .justify-around { justify-content: space-around; }
+    .justify-items-center { justify-items: center; }
+    .relative { position: relative; }
+    .fixed { position: fixed; }
+    .sticky { position: sticky; }
+    .inset-0 { top: 0px; right: 0px; bottom: 0px; left: 0px; }
+    .top-0 { top: 0px; }
+    .bottom-4 { bottom: 1rem; }
+    .right-4 { right: 1rem; }
+    .z-10 { z-index: 10; }
+    .z-50 { z-index: 50; }
+    .overflow-hidden { overflow: hidden; }
+    .overflow-y-auto { overflow-y: auto; }
+    .overflow-x-auto { overflow-x: auto; }
+    .truncate { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .whitespace-nowrap { white-space: nowrap; }
+    .select-none { user-select: none; -webkit-user-select: none; }
+    .cursor-pointer { cursor: pointer; }
+    .text-left { text-align: left; }
+    .text-center { text-align: center; }
+    .text-right { text-align: right; }
+    .uppercase { text-transform: uppercase; }
+    .italic { font-style: italic; }
+    .font-light { font-weight: 300; }
+    .font-normal { font-weight: 400; }
+    .font-medium { font-weight: 500; }
+    .font-semibold { font-weight: 600; }
+    .font-bold { font-weight: 700; }
+    .font-extrabold { font-weight: 800; }
+    .leading-none { line-height: 1; }
+    .leading-tight { line-height: 1.25; }
+    .leading-snug { line-height: 1.375; }
+    .leading-relaxed { line-height: 1.625; }
+    .tracking-tight { letter-spacing: -0.025em; }
+    .tracking-wider { letter-spacing: 0.05em; }
+    .w-full { width: 100%; }
+    .h-full { height: 100%; }
+    .grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .grid-cols-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    .grid-cols-12 { grid-template-columns: repeat(12, minmax(0, 1fr)); }
+    .border { border-width: 1px; }
+    .border-2 { border-width: 2px; }
+    .border-t { border-top-width: 1px; }
+    .border-b { border-bottom-width: 1px; }
+    .border-black\/5 { border-color: rgba(0,0,0,0.05); }
+    .border-black\/30 { border-color: rgba(0,0,0,0.30); }
+    .border-white\/10 { border-color: rgba(255,255,255,0.10); }
+    .border-\[var\(--vaktija-border\)\] { border-color: var(--vaktija-border); }
+    .divide-y > :not([hidden]) ~ :not([hidden]) { border-top-width: 1px; border-color: var(--vaktija-border); }
+    .space-y-1 > :not([hidden]) ~ :not([hidden]) { margin-top: 0.25rem; }
+    .space-y-2 > :not([hidden]) ~ :not([hidden]) { margin-top: 0.5rem; }
+    .space-y-2\.5 > :not([hidden]) ~ :not([hidden]) { margin-top: 0.625rem; }
+    .space-y-3 > :not([hidden]) ~ :not([hidden]) { margin-top: 0.75rem; }
+    .space-y-3\.5 > :not([hidden]) ~ :not([hidden]) { margin-top: 0.875rem; }
+    .space-y-4 > :not([hidden]) ~ :not([hidden]) { margin-top: 1rem; }
+    .rounded { border-radius: 0.25rem; }
+    .rounded-md { border-radius: 0.375rem; }
+    .rounded-lg { border-radius: 0.5rem; }
+    .rounded-xl { border-radius: 0.75rem; }
+    .rounded-2xl { border-radius: 1rem; }
+    .rounded-full { border-radius: 9999px; }
+    .bg-white { background-color: #ffffff; }
+    .bg-inherit { background-color: inherit; }
+    .bg-current { background-color: currentColor; }
+    .bg-black\/5 { background-color: rgba(0,0,0,0.05); }
+    .bg-black\/80 { background-color: rgba(0,0,0,0.80); }
+    .text-white { color: #ffffff; }
+    .text-current { color: currentColor; }
+    .text-xs { font-size: 0.75rem; line-height: 1rem; }
+    .text-sm { font-size: 0.875rem; line-height: 1.25rem; }
+    .shadow-sm { box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05); }
+    .shadow-md { box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); }
+    .shadow-lg { box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1); }
+    .shadow-2xl { box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); }
+    .transition, .transition-all, .transition-colors, .transition-transform { transition: all 0.15s ease-in-out; }
+    .focus\:outline-none:focus { outline: 2px solid transparent; outline-offset: 2px; }
+    .opacity-40 { opacity: 0.4; }
+    .opacity-80 { opacity: 0.8; }
+    .opacity-85 { opacity: 0.85; }
+    .\!h\-8 { height: 2rem !important; }
+    .\!w\-8 { width: 2rem !important; }
+    .bg\-\[\#007aff\] { background-color: #007aff; }
+    .bg\-\[\#101316\] { background-color: #101316; }
+    .bg\-\[\#121518\] { background-color: #121518; }
+    .bg\-\[\#14171b\] { background-color: #14171b; }
+    .bg\-\[\#1a1e23\] { background-color: #1a1e23; }
+    .bg\-\[\#1e2227\] { background-color: #1e2227; }
+    .bg\-\[\#252a30\] { background-color: #252a30; }
+    .bg\-\[\#52565a\] { background-color: #52565a; }
+    .bg\-\[\#6e7073\] { background-color: #6e7073; }
+    .bg\-\[\#9e8e68\] { background-color: #9e8e68; }
+    .bg\-\[\#a59573\] { background-color: #a59573; }
+    .bg\-\[\#b8babc\] { background-color: #b8babc; }
+    .bg\-\[\#babbb9\] { background-color: #babbb9; }
+    .bg\-\[\#ebf0f5\] { background-color: #ebf0f5; }
+    .border\-\[\#2a3038\] { border-color: #2a3038; }
+    .border\-\[\#2e343d\] { border-color: #2e343d; }
+    .border\-\[\#343b44\] { border-color: #343b44; }
+    .border\-\[\#3a414d\] { border-color: #3a414d; }
+    .border\-\[\#757575\] { border-color: #757575; }
+    .border\-\[\#a59573\] { border-color: #a59573; }
+    .border\-\[var\(\-\-vaktija\-border\)\] { border-color: var(--vaktija-border); }
+    .gap\-1 { gap: 0.25rem; }
+    .gap\-1\.5 { gap: 0.375rem; }
+    .gap\-2 { gap: 0.5rem; }
+    .gap\-2\.5 { gap: 0.625rem; }
+    .gap\-3 { gap: 0.75rem; }
+    .gap\-\[1\.5px\] { gap: 1.5px; }
+    .gap\-\[3px\] { gap: 3px; }
+    .gap\-x\-5 { column-gap: 1.25rem; }
+    .gap\-y\-1\.5 { row-gap: 0.375rem; }
+    .h\-1 { height: 0.25rem; }
+    .h\-1\.5 { height: 0.375rem; }
+    .h\-11 { height: 2.75rem; }
+    .h\-2 { height: 0.5rem; }
+    .h\-2\.5 { height: 0.625rem; }
+    .h\-3\.5 { height: 0.875rem; }
+    .h\-4 { height: 1rem; }
+    .h\-5 { height: 1.25rem; }
+    .h\-6 { height: 1.5rem; }
+    .h\-7 { height: 1.75rem; }
+    .h\-8 { height: 2rem; }
+    .h\-\[11px\] { height: 11px; }
+    .h\-\[18px\] { height: 18px; }
+    .h\-\[240px\] { height: 240px; }
+    .h\-\[780px\] { height: 780px; }
+    .mb\-1 { margin-bottom: 0.25rem; }
+    .mb\-2\.5 { margin-bottom: 0.625rem; }
+    .mb\-3 { margin-bottom: 0.75rem; }
+    .mb\-4 { margin-bottom: 1rem; }
+    .mb\-5 { margin-bottom: 1.25rem; }
+    .ml\-2\.5 { margin-left: 0.625rem; }
+    .mr\-1 { margin-right: 0.25rem; }
+    .mr\-3 { margin-right: 0.75rem; }
+    .mt\-0\.5 { margin-top: 0.125rem; }
+    .mt\-1 { margin-top: 0.25rem; }
+    .mt\-1\.5 { margin-top: 0.375rem; }
+    .mt\-2\.5 { margin-top: 0.625rem; }
+    .mt\-3 { margin-top: 0.75rem; }
+    .mt\-6 { margin-top: 1.5rem; }
+    .my\-1 { margin-top: 0.25rem; margin-bottom: 0.25rem; }
+    .my\-3 { margin-top: 0.75rem; margin-bottom: 0.75rem; }
+    .p\-0\.5 { padding: 0.125rem; }
+    .p\-1 { padding: 0.25rem; }
+    .p\-2 { padding: 0.5rem; }
+    .p\-3 { padding: 0.75rem; }
+    .p\-3\.5 { padding: 0.875rem; }
+    .p\-4 { padding: 1rem; }
+    .p\-5 { padding: 1.25rem; }
+    .p\-\[2px\] { padding: 2px; }
+    .pb\-1\.5 { padding-bottom: 0.375rem; }
+    .pb\-2 { padding-bottom: 0.5rem; }
+    .pb\-2\.5 { padding-bottom: 0.625rem; }
+    .pb\-3 { padding-bottom: 0.75rem; }
+    .pb\-4 { padding-bottom: 1rem; }
+    .pb\-6 { padding-bottom: 1.5rem; }
+    .pl\-1 { padding-left: 0.25rem; }
+    .pl\-2 { padding-left: 0.5rem; }
+    .pr\-1 { padding-right: 0.25rem; }
+    .pt\-0\.5 { padding-top: 0.125rem; }
+    .pt\-1 { padding-top: 0.25rem; }
+    .pt\-1\.5 { padding-top: 0.375rem; }
+    .pt\-2 { padding-top: 0.5rem; }
+    .pt\-2\.5 { padding-top: 0.625rem; }
+    .pt\-3 { padding-top: 0.75rem; }
+    .pt\-3\.5 { padding-top: 0.875rem; }
+    .px\-0\.5 { padding-left: 0.125rem; padding-right: 0.125rem; }
+    .px\-1 { padding-left: 0.25rem; padding-right: 0.25rem; }
+    .px\-1\.5 { padding-left: 0.375rem; padding-right: 0.375rem; }
+    .px\-2 { padding-left: 0.5rem; padding-right: 0.5rem; }
+    .px\-2\.5 { padding-left: 0.625rem; padding-right: 0.625rem; }
+    .px\-3 { padding-left: 0.75rem; padding-right: 0.75rem; }
+    .px\-4 { padding-left: 1rem; padding-right: 1rem; }
+    .px\-5 { padding-left: 1.25rem; padding-right: 1.25rem; }
+    .px\-6 { padding-left: 1.5rem; padding-right: 1.5rem; }
+    .py\-0\.5 { padding-top: 0.125rem; padding-bottom: 0.125rem; }
+    .py\-1 { padding-top: 0.25rem; padding-bottom: 0.25rem; }
+    .py\-1\.5 { padding-top: 0.375rem; padding-bottom: 0.375rem; }
+    .py\-2 { padding-top: 0.5rem; padding-bottom: 0.5rem; }
+    .py\-2\.5 { padding-top: 0.625rem; padding-bottom: 0.625rem; }
+    .py\-3 { padding-top: 0.75rem; padding-bottom: 0.75rem; }
+    .py\-3\.5 { padding-top: 0.875rem; padding-bottom: 0.875rem; }
+    .py\-4 { padding-top: 1rem; padding-bottom: 1rem; }
+    .py\-\[1\.5px\] { padding-top: 1.5px; padding-bottom: 1.5px; }
+    .rounded\-\[30px\] { border-radius: 30px; }
+    .rounded\-\[38px\] { border-radius: 38px; }
+    .rounded\-\[3px\] { border-radius: 3px; }
+    .rounded\-\[42\%\] { border-radius: 42%; }
+    .rounded\-\[5px\] { border-radius: 5px; }
+    .rounded\-\[7px\] { border-radius: 7px; }
+    .rounded\-\[9px\] { border-radius: 9px; }
+    .text\-\[\#000000\] { color: #000000; }
+    .text\-\[\#007aff\] { color: #007aff; }
+    .text\-\[\#0c0c0c\] { color: #0c0c0c; }
+    .text\-\[\#0e0e0e\] { color: #0e0e0e; }
+    .text\-\[\#111111\] { color: #111111; }
+    .text\-\[\#111417\] { color: #111417; }
+    .text\-\[\#121518\] { color: #121518; }
+    .text\-\[\#1a73e8\] { color: #1a73e8; }
+    .text\-\[\#2c2e30\] { color: #2c2e30; }
+    .text\-\[\#4a4a4a\] { color: #4a4a4a; }
+    .text\-\[\#55595d\] { color: #55595d; }
+    .text\-\[\#5a5e62\] { color: #5a5e62; }
+    .text\-\[\#6e7073\] { color: #6e7073; }
+    .text\-\[\#8e9094\] { color: #8e9094; }
+    .text\-\[\#8e9297\] { color: #8e9297; }
+    .text\-\[\#9e8e68\] { color: #9e8e68; }
+    .text\-\[\#a6a8ab\] { color: #a6a8ab; }
+    .text\-\[\#c4b491\] { color: #c4b491; }
+    .text\-\[\#d81515\] { color: #d81515; }
+    .text\-\[\#e0b76b\] { color: #e0b76b; }
+    .text\-\[10\.5px\] { font-size: 10.5px; }
+    .text\-\[10px\] { font-size: 10px; }
+    .text\-\[11px\] { font-size: 11px; }
+    .text\-\[13\.5px\] { font-size: 13.5px; }
+    .text\-\[13px\] { font-size: 13px; }
+    .text\-\[14\.5px\] { font-size: 14.5px; }
+    .text\-\[14px\] { font-size: 14px; }
+    .text\-\[15\.5px\] { font-size: 15.5px; }
+    .text\-\[15px\] { font-size: 15px; }
+    .text\-\[16px\] { font-size: 16px; }
+    .text\-\[17px\] { font-size: 17px; }
+    .text\-\[22px\] { font-size: 22px; }
+    .text\-\[40px\] { font-size: 40px; }
+    .text\-\[8px\] { font-size: 8px; }
+    .w\-10 { width: 2.5rem; }
+    .w\-11 { width: 2.75rem; }
+    .w\-14 { width: 3.5rem; }
+    .w\-2\.5 { width: 0.625rem; }
+    .w\-20 { width: 5rem; }
+    .w\-3\.5 { width: 0.875rem; }
+    .w\-32 { width: 8rem; }
+    .w\-4 { width: 1rem; }
+    .w\-5 { width: 1.25rem; }
+    .w\-56 { width: 14rem; }
+    .w\-6 { width: 1.5rem; }
+    .w\-7 { width: 1.75rem; }
+    .w\-8 { width: 2rem; }
+    .w\-\[11px\] { width: 11px; }
+    .w\-\[18px\] { width: 18px; }
+    .w\-\[240px\] { width: 240px; }
+    .w\-\[2px\] { width: 2px; }
+</style>
 </head>
 <body class="min-h-screen flex flex-col items-center justify-start py-3 px-2 sm:px-4">
 
@@ -314,31 +603,58 @@
         <path d="M 0.5,0 C 0.835,0 1,0.165 1,0.5 C 1,0.835 0.835,1 0.5,1 C 0.165,1 0,0.835 0,0.5 C 0,0.165 0.165,0 0.5,0 Z" />
       </clipPath>
 
-      <!-- Exact Vaktija.ba V-Clock Icon -->
+      <!-- Exact Original Vaktija.ba Status Bar Icon matching 29877.jpg (flat arc ends + rounded V-hand caps) -->
       <g id="vaktijaStatusBarIconSvg">
         <path
-          d="M 32.5 7.5 A 14.5 14.5 0 1 1 8.8 15.0"
+          d="M 30.8 11.2 A 14.5 14.5 0 1 1 7.2 17.5"
           fill="none"
           stroke="currentColor"
           stroke-width="4.2"
-          stroke-linecap="round"
+          stroke-linecap="butt"
         />
         <path
-          d="M 11.5 8.5 L 23.0 21.5 L 27.0 3.8"
+          d="M 12.6 10.2 A 14.5 14.5 0 0 1 19.6 7.5"
           fill="none"
           stroke="currentColor"
           stroke-width="4.2"
+          stroke-linecap="butt"
+        />
+        <path
+          d="M 9.6 12.1 L 20.6 24.5 L 23.8 6.4"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="4.6"
           stroke-linecap="round"
           stroke-linejoin="round"
         />
-        <circle cx="19.2" cy="6.2" r="2.35" fill="currentColor" />
       </g>
 
-      <!-- Official Vaktija.ba App Launcher Icon in One UI 9 Squircle shape -->
+      <!-- Exact Original Vaktija.ba App & Notification Panel Icon matching 29874.png (White squircle + #6e6f73 grey arc + #a59573 gold V hands) -->
       <g id="vaktijaBaAppIconSvg">
-        <path d="M 50,0 C 83.5,0 100,16.5 100,50 C 100,83.5 83.5,100 50,100 C 16.5,100 0,83.5 0,50 C 0,16.5 16.5,0 50,0 Z" fill="#a59573" />
-        <g transform="translate(14, 15) scale(1.68)" color="#ffffff">
-          <use href="#vaktijaStatusBarIconSvg" />
+        <path d="M 50,0 C 83.5,0 100,16.5 100,50 C 100,83.5 83.5,100 50,100 C 16.5,100 0,83.5 0,50 C 0,16.5 16.5,0 50,0 Z" fill="#ffffff" />
+        <g transform="translate(13.5, 14.0) scale(1.74)">
+          <path
+            d="M 30.8 11.2 A 14.5 14.5 0 1 1 7.2 17.5"
+            fill="none"
+            stroke="#6e6f73"
+            stroke-width="4.3"
+            stroke-linecap="butt"
+          />
+          <path
+            d="M 12.6 10.2 A 14.5 14.5 0 0 1 19.6 7.5"
+            fill="none"
+            stroke="#6e6f73"
+            stroke-width="4.3"
+            stroke-linecap="butt"
+          />
+          <path
+            d="M 9.6 12.1 L 20.6 24.5 L 23.8 6.4"
+            fill="none"
+            stroke="#a59573"
+            stroke-width="4.8"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
         </g>
       </g>
     </defs>
@@ -346,6 +662,29 @@
 
   <!-- Compact Simulator Control Bar -->
   <div id="simTopControlBar" class="w-full max-w-[440px] mb-3 bg-[#1a1e23] border border-[#2e343d] rounded-2xl p-3 shadow-lg text-white">
+    <div class="mb-2.5 pb-2.5 border-b border-[#2a3038] flex flex-col gap-1.5">
+      <a id="directZipDownloadBtn" href="#" download="VaktijaNova-StandaloneApp.zip" class="w-full py-2.5 px-4 rounded-xl font-bold text-[13.5px] text-white text-center shadow-md flex items-center justify-center gap-2 transition hover:opacity-90" style="background: linear-gradient(135deg, #16a34a 0%, #15803d 100%); text-decoration: none;">
+        <span>⬇️ Preuzmi ZIP (VaktijaNova-StandaloneApp.zip)</span>
+      </a>
+      <!-- 1-Tap GitHub Auto-Push directly from Phone Browser -->
+      <div class="mt-1 bg-[#121518] border border-[#2e343d] rounded-xl p-2.5 space-y-2">
+        <div class="flex items-center justify-between">
+          <span class="text-[11px] font-bold text-[#c4b491]">⚡ Automatski Push na GitHub (sa telefona, bez unzipovanja)</span>
+          <a href="https://github.com/settings/tokens/new?scopes=repo&description=VaktijaAutoPush" target="_blank" rel="noopener noreferrer" class="text-[10.5px] text-[#60a5fa] underline">Kreiraj Token (1x)</a>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-1.5">
+          <select id="ghRepoSelect" class="bg-[#1a1e23] text-[11px] text-white border border-[#343b44] rounded-lg px-2 py-1.5 focus:outline-none">
+            <option value="ahmedpajevic-lab/Vaktija-premium-2.0">ahmedpajevic-lab/Vaktija-premium-2.0</option>
+            <option value="ahmedpajevic-lab/Vaktija-nova">ahmedpajevic-lab/Vaktija-nova</option>
+          </select>
+          <input id="ghTokenInput" type="password" placeholder="Zalijepi GitHub token (ghp_...)" class="bg-[#1a1e23] text-[11px] text-white border border-[#343b44] rounded-lg px-2 py-1.5 focus:outline-none" />
+        </div>
+        <button id="ghAutoPushBtn" type="button" class="w-full py-1.5 px-3 rounded-lg bg-[#238636] hover:bg-[#2ea043] text-white font-bold text-xs flex items-center justify-center gap-1.5 shadow transition">
+          <span>🚀 1-Klik Auto-Update na GitHub</span>
+        </button>
+        <div id="ghPushStatus" class="text-[10.5px] text-gray-300 hidden"></div>
+      </div>
+    </div>
     <div class="flex items-center justify-between gap-2 pb-2 border-b border-[#2a3038]">
       <div class="flex items-center gap-2">
         <div class="w-7 h-7 rounded-[42%] overflow-hidden shrink-0 bg-[#a59573] flex items-center justify-center">
@@ -512,15 +851,13 @@
             </div>
           </div>
 
-          <!-- View C: Exact Samsung One UI Now Brief Pill (Blurry translucent Navy Blue + Gold text when active; Default Samsung Now Brief background + dimmed circle on Always On Display) -->
+          <!-- View C: Samsung One UI Now Brief Pill (Follows device Light/Dark color scheme with minutes in circle icon) -->
           <div id="samsungNowBriefCard" class="mt-2.5 flex justify-center select-none transition-all">
-            <div id="samsungNowBriefPill" class="flex items-center rounded-full shadow-md cursor-pointer transition-all duration-300" style="width: 272px; height: 71px; padding-left: 15px; padding-right: 20px; background: linear-gradient(90deg, rgba(5, 22, 50, 0.72) 0%, rgba(7, 26, 58, 0.64) 52%, rgba(2, 17, 42, 0.56) 100%); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);" title="Klikni za prebacivanje između aktivnog ekrana i Always On Display (AOD) prikaza">
-              <!-- Exact 39x39px Now Brief Circle with deep navy blue background (#051632 -> #02112a) and gold clock-hand numerals (#e0b76b -> #cca255) -->
-              <div id="nowBriefMinutesCircle" class="rounded-full flex items-center justify-center shrink-0 relative overflow-hidden transition-all duration-300" style="width: 39px; height: 39px; background: linear-gradient(180deg, #051632 0%, #02112a 100%); box-shadow: 0 1px 3px rgba(0,0,0,0.28);" title="Minute do sljedećeg vakta">
-                <span id="nowBriefMinutesText" class="relative z-10 font-extrabold leading-none tracking-tight" style="font-family: 'Roboto', -apple-system, BlinkMacSystemFont, sans-serif; font-size: 17.5px; color: #dab063; background: linear-gradient(180deg, #e0b76b 0%, #cca255 55%, #bd9145 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-variant-numeric: tabular-nums;">42</span>
+            <div id="samsungNowBriefPill" class="flex items-center rounded-full shadow-md cursor-pointer transition-all duration-300" style="width: 272px; height: 64px; padding-left: 13px; padding-right: 18px; background: rgba(255, 255, 255, 0.88); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);" title="Samsung Now Brief prikaz">
+              <div id="nowBriefMinutesCircle" class="rounded-full flex items-center justify-center shrink-0 relative overflow-hidden transition-all duration-300" style="width: 39px; height: 39px; background: #3b424c;" title="Minute do sljedećeg vakta">
+                <span id="nowBriefMinutesText" class="relative z-10 font-bold leading-none tracking-tight text-white" style="font-family: 'Roboto', -apple-system, BlinkMacSystemFont, sans-serif; font-size: 17.5px; font-variant-numeric: tabular-nums;">42</span>
               </div>
-              <!-- Exact Now Brief text ("Evening is here") in the same gold color as the numbers -->
-              <span id="nowBriefStatusText" class="font-semibold truncate transition-all duration-300" style="margin-left: 10px; font-family: 'Roboto', -apple-system, BlinkMacSystemFont, sans-serif; font-size: 18.5px; letter-spacing: -0.2px; line-height: 1.2; color: #dab063; background: linear-gradient(180deg, #e0b76b 0%, #cca255 55%, #bd9145 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Evening is here</span>
+              <span id="nowBriefStatusText" class="font-semibold truncate transition-all duration-300 text-[#1c1e21]" style="margin-left: 11px; font-family: 'Roboto', -apple-system, BlinkMacSystemFont, sans-serif; font-size: 17px; letter-spacing: -0.2px; line-height: 1.2;">Morning brief</span>
             </div>
             <!-- Hidden compatibility elements -->
             <div class="hidden">
@@ -716,12 +1053,8 @@
                 </div>
               </div>
 
-              <!-- 2. Veličina teksta -->
-              <div class="pt-1 pb-2">
-                <div class="font-bold text-[15px] mb-4">Veličina teksta</div>
-                <div class="px-1">
-                  <input id="inPageTextSizeSlider" type="range" min="0.75" max="1.30" step="0.01" value="0.95" class="vaktija-text-slider" />
-                </div>
+              <div class="hidden">
+                <input id="inPageTextSizeSlider" type="range" min="0.75" max="1.30" step="0.01" value="0.95" class="vaktija-text-slider" />
               </div>
 
               <div class="border-t border-[var(--vaktija-border)]"></div>
@@ -784,6 +1117,19 @@
 
               <div class="border-t border-[var(--vaktija-border)]"></div>
 
+              <!-- 4c. Test opcija (odbrojava 59 minuta do sljedećeg vakta) -->
+              <div id="rowTest59Mode" class="flex items-center justify-between gap-3 py-1 cursor-pointer">
+                <div>
+                  <div class="font-bold text-[15px]">Test</div>
+                  <div id="test59SettingSub" class="text-[13px] text-[#8e9297] mt-0.5">Odbrojava 59 minuta do sljedećeg vakta (provjera boxa i Now brief-a).</div>
+                </div>
+                <div id="switchTest59Mode" class="vaktija-switch" role="switch" aria-checked="false">
+                  <div class="vaktija-switch-knob"></div>
+                </div>
+              </div>
+
+              <div class="border-t border-[var(--vaktija-border)]"></div>
+
               <!-- 5. Posebne postavke za džumu -->
               <div class="flex items-center justify-between gap-3 py-1">
                 <div>
@@ -797,28 +1143,16 @@
 
               <div class="border-t border-[var(--vaktija-border)]"></div>
 
-              <!-- 6. Social -> Podijeli -->
-              <div class="space-y-2 py-0.5">
-                <div class="font-bold text-[14.5px]">Social</div>
-                <button id="inPageShareBtn" type="button" class="w-full text-left focus:outline-none">
-                  <div class="font-bold text-[15px]">Podijeli</div>
-                  <div class="text-[13px] text-[#8e9297] mt-0.5">Email, SMS, chat...</div>
-                </button>
+              <!-- Hidden compatibility buttons -->
+              <div class="hidden">
+                <button id="inPageShareBtn" type="button">Podijeli Email, SMS, chat...</button>
+                <button id="inPageContactBtn" type="button">Kontakt Pošalji prijedlog, prijavi bug...</button>
               </div>
 
-              <div class="border-t border-[var(--vaktija-border)]"></div>
-
-              <!-- 7. Kontakt & Aplikacija (NO Islamska zajednica logo at bottom as requested!) -->
-              <div class="space-y-3.5 pt-0.5">
-                <button id="inPageContactBtn" type="button" class="w-full text-left focus:outline-none">
-                  <div class="font-bold text-[15px]">Kontakt</div>
-                  <div class="text-[13px] text-[#8e9297] mt-0.5">Pošalji prijedlog, prijavi bug...</div>
-                </button>
-
-                <div>
-                  <div class="font-bold text-[15px]">Aplikacija</div>
-                  <div class="text-[13px] text-[#8e9297] mt-0.5">Verzija 2.4.0</div>
-                </div>
+              <!-- 6. Aplikacija (Verzija 1.0) -->
+              <div class="pt-0.5">
+                <div class="font-bold text-[15px]">Aplikacija</div>
+                <div class="text-[13px] text-[#8e9297] mt-0.5">Verzija 1.0</div>
               </div>
             </div>
           </div>
@@ -858,9 +1192,9 @@
         <!-- 5. BOTTOM NAVIGATION BAR WITH THE EXACT 4 BUTTONS (Hidden only on full-screen Lokacija view, matching 29594.jpg!) -->
         <div id="bottomNavContainer" class="pt-2.5 pb-2 px-6 bg-inherit border-t border-black/5 shrink-0">
           <div id="bottomNavFourIcons" class="grid grid-cols-4 items-center justify-items-center py-1">
-            <!-- Tab 1: Vaktija Home Icon -->
+            <!-- Tab 1: Vaktija Home Icon (Status bar icon scaled cleanly to match the other 3 bottom icons) -->
             <button id="navHomeBtn" type="button" class="p-2 rounded-xl text-[#0e0e0e] transition focus:outline-none" title="Vaktija">
-              <svg class="w-6 h-6" viewBox="6 1.2 33.5 34.2">
+              <svg class="w-6 h-6" viewBox="2.5 2.5 37 37">
                 <use href="#vaktijaStatusBarIconSvg" />
               </svg>
             </button>
@@ -887,10 +1221,7 @@
             </button>
           </div>
 
-          <!-- Android Bottom Gesture Pill -->
-          <div class="flex justify-center mt-1.5">
-            <div class="w-32 h-1 rounded-full bg-[#b8babc]"></div>
-          </div>
+
         </div>
 
       </div>
@@ -1135,9 +1466,9 @@
     const VAKAT_SHORT_NAMES = ["Zora", "Izlazak", "Podne", "Ikindija", "Akšam", "Jacija"];
 
     const VERIFIED_NOV4_BASE = {
-      93: ["04:49", "06:21", "12:00", "14:06", "16:37", "17:57"], // Tuzla
-      77: ["04:47", "06:19", "12:00", "14:10", "16:41", "18:01"], // Sarajevo
-      61: ["04:52", "06:24", "12:00", "14:11", "16:41", "18:01"]  // Mostar
+      93: ["04:49", "06:21", "11:30", "14:06", "16:37", "17:57"], // Tuzla
+      77: ["04:47", "06:19", "11:31", "14:10", "16:41", "18:01"], // Sarajevo
+      61: ["04:52", "06:24", "11:33", "14:11", "16:41", "18:01"]  // Mostar
     };
 
     const QUICK_CITIES = [
@@ -1198,7 +1529,9 @@
       notifCardExpanded: false,
       highlightNextRed: true,
       showNowBrief: true,
-      isAodMode: false
+      isAodMode: false,
+      test59Mode: false,
+      test59StartMs: 0
     };
 
     try {
@@ -1215,6 +1548,10 @@
         if (typeof window.AndroidBridge.isNowBriefEnabled === 'function') {
           state.showNowBrief = !!window.AndroidBridge.isNowBriefEnabled();
         }
+        if (typeof window.AndroidBridge.isTestModeEnabled === 'function') {
+          state.test59Mode = !!window.AndroidBridge.isTestModeEnabled();
+          if (state.test59Mode) state.test59StartMs = Date.now();
+        }
       }
     } catch (e) {}
 
@@ -1229,16 +1566,7 @@
     };
 
     function showToast(msg) {
-      const banner = document.getElementById('toastBanner');
-      const text = document.getElementById('toastMessage');
-      text.textContent = msg;
-      banner.classList.remove('hidden');
-      banner.classList.add('flex');
-      clearTimeout(window._toastTimer);
-      window._toastTimer = setTimeout(() => {
-        banner.classList.add('hidden');
-        banner.classList.remove('flex');
-      }, 2400);
+      // Popup toast disabled per user preference
     }
 
     function playGentleChime() {
@@ -1463,21 +1791,90 @@
       return String(nh).padStart(2, '0') + ':' + String(nm).padStart(2, '0');
     }
 
-    function getFallbackVaktijaForCity(locationId, dateObj, dayOffsetVal = state.dayOffset) {
-      const cityName = VAKTIJA_LOCATIONS[locationId] || "Tuzla";
-      let base = VERIFIED_NOV4_BASE[locationId];
-      if (!base) {
-        const tuzla = VERIFIED_NOV4_BASE[93];
-        const offset = ((locationId % 9) - 4);
-        base = tuzla.map((t, idx) => idx === 2 ? "12:00" : addMinutesToTimeStr(t, offset));
-      }
-      const shifted = base.map((t, i) => {
-        if (i === 2 && state.dhuhrMode === 'standard') return "12:00";
-        return addMinutesToTimeStr(t, dayOffsetVal * (i < 2 ? 1 : -1));
+    function isBosniaSummerTime(year, month1Based, day) {
+      if (month1Based < 3 || month1Based > 10) return false;
+      if (month1Based > 3 && month1Based < 10) return true;
+      const lastDayDow = new Date(year, month1Based - 1, 31).getDay(); // 0 = Sunday
+      const lastSunday = 31 - lastDayDow;
+      return month1Based === 3 ? (day >= lastSunday) : (day < lastSunday);
+    }
+
+    function normalizeAndOverrideVakatTimes(rawTimes, year, month1Based, day) {
+      const dst = isBosniaSummerTime(year, month1Based, day);
+      let minsList = rawTimes.map(t => {
+        const p = String(t).split(':').map(Number);
+        return (p[0] || 0) * 60 + (p[1] || 0);
       });
-      if (state.dhuhrMode === 'astronomical' && shifted[2] === "12:00") {
-        shifted[2] = "11:30";
+      // If an API response in summer time returned unshifted UTC+1 winter times (where Podne is < 12:20), shift all times by +60 min for DST
+      if (dst && minsList[2] > 0 && minsList[2] < 740) {
+        minsList = minsList.map(m => (m + 60) % 1440);
       }
+      const formatted = minsList.map(total => {
+        const hh = Math.floor(((total % 1440) + 1440) % 1440 / 60);
+        const mm = ((total % 1440) + 1440) % 60;
+        return String(hh).padStart(2, '0') + ':' + String(mm).padStart(2, '0');
+      });
+      // Always override Podne / Džuma (index 2) to 13:00 in Summer Time (DST) and 12:00 in Winter Time
+      formatted[2] = dst ? "13:00" : "12:00";
+      return formatted;
+    }
+
+    function getFallbackVaktijaForCity(locationId, dateObj) {
+      const cityName = VAKTIJA_LOCATIONS[locationId] || "Tuzla";
+      const y = dateObj.getFullYear();
+      const m = dateObj.getMonth() + 1;
+      const d = dateObj.getDate();
+      const dst = isBosniaSummerTime(y, m, d);
+      const tz = dst ? 2.0 : 1.0;
+
+      const startOfYear = Date.UTC(y, 0, 1);
+      const curUtc = Date.UTC(y, m - 1, d);
+      const doy = Math.floor((curUtc - startOfYear) / 86400000) + 1;
+
+      let lat = 44.538, lon = 18.676; // Tuzla (93)
+      if (locationId === 77) { lat = 43.856; lon = 18.413; }
+      else if (locationId === 61) { lat = 43.343; lon = 17.808; }
+      else if (locationId === 1) { lat = 44.772; lon = 17.191; }
+      else if (locationId === 2) { lat = 44.812; lon = 15.869; }
+      else if (locationId === 102) { lat = 44.203; lon = 17.908; }
+      else if (locationId === 14) { lat = 44.873; lon = 18.808; }
+      else if (locationId === 3) { lat = 44.759; lon = 19.214; }
+      else if (locationId === 90) { lat = 44.226; lon = 17.666; }
+      else if (locationId === 110) { lat = 43.137; lon = 20.512; }
+      else if (locationId !== 93) {
+        lon = 18.676 - ((locationId % 9) - 4) * 0.22;
+      }
+
+      const gamma = (2.0 * Math.PI / 365.0) * (doy - 1 + 0.5);
+      const eqtime = 229.18 * (0.000075 + 0.001868 * Math.cos(gamma) - 0.032077 * Math.sin(gamma) - 0.014615 * Math.cos(2 * gamma) - 0.040849 * Math.sin(2 * gamma));
+      const decl = 0.006918 - 0.399912 * Math.cos(gamma) + 0.070257 * Math.sin(gamma) - 0.006758 * Math.cos(2 * gamma) + 0.000907 * Math.sin(2 * gamma) - 0.002697 * Math.cos(3 * gamma) + 0.00148 * Math.sin(3 * gamma);
+
+      const latRad = lat * Math.PI / 180.0;
+      const hourAngle = (zenithDeg) => {
+        const zRad = zenithDeg * Math.PI / 180.0;
+        let cosHa = (Math.cos(zRad) - Math.sin(latRad) * Math.sin(decl)) / (Math.cos(latRad) * Math.cos(decl));
+        cosHa = Math.max(-0.999, Math.min(0.999, cosHa));
+        return Math.acos(cosHa) * 180.0 / Math.PI;
+      };
+
+      const solarNoon = 720.0 - 4.0 * lon - eqtime + tz * 60.0;
+      const zoraMin = solarNoon - 4.0 * hourAngle(108.0) + 1.0;
+      const izlazakMin = solarNoon - 4.0 * hourAngle(90.833) - 7.0;
+      const asrAlt = Math.atan(1.0 / (1.0 + Math.tan(Math.abs(latRad - decl))));
+      const asrZenith = 90.0 - (asrAlt * 180.0 / Math.PI);
+      const ikindijaMin = solarNoon + 4.0 * hourAngle(asrZenith);
+      const aksamMin = solarNoon + 4.0 * hourAngle(90.833) + 6.0;
+      const jacijaMin = solarNoon + 4.0 * hourAngle(106.3);
+
+      const fmt = (mins) => {
+        const rounded = ((Math.round(mins) % 1440) + 1440) % 1440;
+        const hh = Math.floor(rounded / 60);
+        const mm = rounded % 60;
+        return String(hh).padStart(2, '0') + ':' + String(mm).padStart(2, '0');
+      };
+
+      const podneStr = dst ? "13:00" : "12:00";
+      const times = [fmt(zoraMin), fmt(izlazakMin), podneStr, fmt(ikindijaMin), fmt(aksamMin), fmt(jacijaMin)];
 
       const daysBs = ["ned", "pon", "uto", "sri", "čet", "pet", "sub"];
       const monthsShortBs = [
@@ -1486,17 +1883,36 @@
       ];
       const dName = daysBs[dateObj.getDay()];
       const gregStr = `${dName}, ${dateObj.getDate()}. ${monthsShortBs[dateObj.getMonth()]} ${dateObj.getFullYear()}.`;
-      const hijriDay = ((23 + dayOffsetVal) % 30 + 30) % 30 + 1;
+      const daysSinceNov4 = Math.round((curUtc - Date.UTC(2026, 10, 4)) / 86400000);
+      const hijriDay = ((23 + daysSinceNov4) % 30 + 30) % 30 + 1;
       const hijriStr = `${hijriDay}. džumade-l-ula 1448`;
 
       return {
         lokacija: cityName,
         datum: [hijriStr, gregStr],
-        vakat: shifted,
+        vakat: times,
         isFriday: dateObj.getDay() === 5,
         source: "vaktija.ba takvim"
       };
     }
+
+    window.onNativeVaktijaData = function(json) {
+      if (!json || !Array.isArray(json.vakat) || json.vakat.length !== 6) return;
+      const targetDate = new Date();
+      targetDate.setDate(targetDate.getDate() + state.dayOffset);
+      const y = targetDate.getFullYear();
+      const m = targetDate.getMonth() + 1;
+      const d = targetDate.getDate();
+      const times = normalizeAndOverrideVakatTimes(json.vakat, y, m, d);
+      state.vakatData = {
+        lokacija: json.lokacija || VAKTIJA_LOCATIONS[state.locationId],
+        datum: [json.datum?.[0] || state.vakatData.datum[0], json.datum?.[1] || state.vakatData.datum[1]],
+        vakat: times,
+        isFriday: (typeof json.isFriday === 'boolean') ? json.isFriday : (targetDate.getDay() === 5),
+        source: "api.vaktija.ba (uživo)"
+      };
+      renderAll();
+    };
 
     async function loadPrayerTimesForCurrentState() {
       const targetDate = new Date();
@@ -1509,21 +1925,21 @@
       const m = targetDate.getMonth() + 1;
       const d = targetDate.getDate();
 
-      state.vakatData = getFallbackVaktijaForCity(state.locationId, targetDate, state.dayOffset);
+      state.vakatData = getFallbackVaktijaForCity(state.locationId, targetDate);
       renderAll();
+
+      try {
+        if (window.AndroidBridge && typeof window.AndroidBridge.fetchCityDateForWeb === 'function') {
+          window.AndroidBridge.fetchCityDateForWeb(state.locationId, y, m, d);
+        }
+      } catch (e) {}
 
       try {
         const res = await fetch(`https://api.vaktija.ba/vaktija/v1/${state.locationId}/${y}/${m}/${d}`);
         if (res.ok) {
           const json = await res.json();
           if (json && Array.isArray(json.vakat) && json.vakat.length === 6) {
-            const times = json.vakat.map(t => {
-              const p = t.split(':');
-              return p[0].padStart(2, '0') + ':' + p[1].padStart(2, '0');
-            });
-            if (state.dhuhrMode === 'standard') {
-              times[2] = "12:00";
-            }
+            const times = normalizeAndOverrideVakatTimes(json.vakat, y, m, d);
             state.vakatData = {
               lokacija: json.lokacija || VAKTIJA_LOCATIONS[state.locationId],
               datum: [json.datum?.[0] || state.vakatData.datum[0], state.vakatData.datum[1]],
@@ -1567,7 +1983,10 @@
 
       const currentActiveIndex = (nextIndex === 0) ? 5 : (nextIndex - 1);
 
-      if (state.simMinutes !== null) {
+      if (state.test59Mode) {
+        const elapsedSec = Math.floor((Date.now() - state.test59StartMs) / 1000);
+        secondsUntilNext = Math.max(1, (59 * 60) - elapsedSec);
+      } else if (state.simMinutes !== null) {
         secondsUntilNext = state.simMinutes * 60 - (now.getSeconds() % 60);
         if (secondsUntilNext < 1) secondsUntilNext = 1;
       }
@@ -1628,19 +2047,116 @@
 
     function renderAll() {
       if (!state.vakatData) return;
+      const nowCheck = new Date();
+      if (state._lastSystemDay !== undefined && state._lastSystemDay !== nowCheck.getDate()) {
+        state._lastSystemDay = nowCheck.getDate();
+        // Wire 1-Tap GitHub Auto-Push
+      const ghRepoEl = document.getElementById("ghRepoSelect");
+      const ghTokenEl = document.getElementById("ghTokenInput");
+      const ghPushBtn = document.getElementById("ghAutoPushBtn");
+      const ghStatusEl = document.getElementById("ghPushStatus");
+      try {
+        const savedToken = localStorage.getItem("vp_gh_token");
+        const savedRepo = localStorage.getItem("vp_gh_repo");
+        if (savedToken && ghTokenEl) ghTokenEl.value = savedToken;
+        if (savedRepo && ghRepoEl) ghRepoEl.value = savedRepo;
+      } catch (e) {}
+
+      if (ghPushBtn) {
+        ghPushBtn.addEventListener("click", async () => {
+          const repo = ghRepoEl ? ghRepoEl.value.trim() : "ahmedpajevic-lab/Vaktija-premium-2.0";
+          const token = ghTokenEl ? ghTokenEl.value.trim() : "";
+          if (!token) {
+            if (ghStatusEl) {
+              ghStatusEl.classList.remove("hidden");
+              ghStatusEl.textContent = "⚠️ Prvo klikni 'Kreiraj Token (1x)' iznad, generiši token (označi 'repo') i zalijepi ga u polje.";
+            }
+            return;
+          }
+          try {
+            localStorage.setItem("vp_gh_token", token);
+            localStorage.setItem("vp_gh_repo", repo);
+          } catch (e) {}
+
+          const zipHref = document.getElementById("directZipDownloadBtn")?.getAttribute("href") || "";
+          const b64Idx = zipHref.indexOf("base64,");
+          if (b64Idx === -1) return;
+          const b64Content = zipHref.substring(b64Idx + 7);
+
+          if (ghStatusEl) {
+            ghStatusEl.classList.remove("hidden");
+            ghStatusEl.textContent = "⏳ Šaljem VaktijaNova-StandaloneApp.zip direktno na GitHub (" + repo + ")...";
+          }
+          ghPushBtn.disabled = true;
+
+          try {
+            const apiUrl = `https://api.github.com/repos/${repo}/contents/VaktijaNova-StandaloneApp.zip`;
+            let existingSha = undefined;
+            const getRes = await fetch(apiUrl, {
+              headers: {
+                "Authorization": `Bearer ${token}`,
+                "Accept": "application/vnd.github+json"
+              }
+            });
+            if (getRes.ok) {
+              const meta = await getRes.json();
+              existingSha = meta.sha;
+            }
+            const bodyObj = {
+              message: "Auto-update VaktijaNova-StandaloneApp.zip from mobile",
+              content: b64Content
+            };
+            if (existingSha) bodyObj.sha = existingSha;
+
+            const putRes = await fetch(apiUrl, {
+              method: "PUT",
+              headers: {
+                "Authorization": `Bearer ${token}`,
+                "Accept": "application/vnd.github+json",
+                "Content-Type": "application/json"
+              },
+              body: JSON.stringify(bodyObj)
+            });
+            if (putRes.ok) {
+              if (ghStatusEl) {
+                ghStatusEl.textContent = "✅ Uspješno poslano na GitHub! GitHub Actions sada sam raspakuje ZIP i gradi novi APK.";
+              }
+            } else {
+              const errTxt = await putRes.text();
+              if (ghStatusEl) {
+                ghStatusEl.textContent = "❌ Greška pri slanju (" + putRes.status + "): provjeri da token ima 'repo' dozvolu.";
+              }
+            }
+          } catch (err) {
+            if (ghStatusEl) {
+              ghStatusEl.textContent = "❌ Mrežna greška: " + err.message;
+            }
+          } finally {
+            ghPushBtn.disabled = false;
+          }
+        });
+      }
+
+      loadPrayerTimesForCurrentState();
+        return;
+      }
+      state._lastSystemDay = nowCheck.getDate();
       const timing = computeTimingState();
       const data = state.vakatData;
 
       // 1. Update Status Bar Adaptive Theme
       const statusBar = document.getElementById('androidStatusBar');
       const batteryPill = document.getElementById('batteryPillBox');
+      const notifShade = document.getElementById('ediyanetNotificationShade');
       if (state.statusBarLight) {
         statusBar.classList.remove('status-bar-dark');
         statusBar.classList.add('status-bar-light');
+        if (notifShade) notifShade.classList.remove('notif-night-mode');
         batteryPill.className = "px-1.5 py-[1.5px] rounded-[5px] bg-[#52565a] text-white font-bold text-[10px] leading-none";
       } else {
         statusBar.classList.remove('status-bar-light');
         statusBar.classList.add('status-bar-dark');
+        if (notifShade) notifShade.classList.add('notif-night-mode');
         batteryPill.className = "px-1.5 py-[1.5px] rounded-[5px] bg-white text-[#111417] font-bold text-[10px] leading-none";
       }
 
@@ -1680,22 +2196,32 @@
       document.getElementById('notifCityName').textContent = data.lokacija;
       document.getElementById('notifHijriDate').textContent = `${data.datum[1]} • ${data.datum[0]}`;
 
-      const nextShortName = VAKAT_SHORT_NAMES[timing.nextIndex];
+      const isFri = !!data.isFriday;
+      const dhuhrLabel = isFri ? "Džuma" : "Podne";
+      const activeShortNames = ["Zora", "Izlazak", dhuhrLabel, "Ikindija", "Akšam", "Jacija"];
+      const targetPrefixes = [
+        "Zora za",
+        "Izlazak sunca za",
+        isFri ? "Džuma za" : "Podne za",
+        "Ikindija za",
+        "Akšam za",
+        "Jacija za"
+      ];
       const h_left = Math.floor(timing.secondsUntilNext / 3600);
       const m_left = Math.floor((timing.secondsUntilNext % 3600) / 60);
       const s_left = timing.secondsUntilNext % 60;
       const hmsString = `${h_left}h ${m_left}m ${s_left}s`;
 
-      // Collapsed View Headline
-      document.getElementById('notifCountdownPill').textContent = formatEdiyanetHeadline(nextShortName, timing.secondsUntilNext);
+      // Collapsed View Headline ("Džuma za: ..." on Friday)
+      document.getElementById('notifCountdownPill').textContent = formatEdiyanetHeadline(targetPrefixes[timing.nextIndex], timing.secondsUntilNext);
 
-      // Collapsed View 6-Column Strip (Next/Current vakat highlighted in bright red!)
+      // Collapsed View 6-Column Strip (Current vakat highlighted in bright red, "Džuma" on Friday!)
       const notifGrid = document.getElementById('notifPrayerGrid');
       notifGrid.innerHTML = data.vakat.map((timeStr, idx) => {
-        const isHighlight = (idx === timing.nextIndex);
+        const isHighlight = (idx === timing.currentActiveIndex);
         return `
           <div class="ediyanet-col ${isHighlight ? 'ediyanet-col-active' : ''}">
-            <span class="ediyanet-col-name">${VAKAT_SHORT_NAMES[idx]}</span>
+            <span class="ediyanet-col-name">${activeShortNames[idx]}</span>
             <span class="ediyanet-col-time">${timeStr}</span>
           </div>
         `;
@@ -1705,15 +2231,6 @@
       document.getElementById('notifExpCityName').textContent = data.lokacija;
       document.getElementById('notifExpHijriDate').textContent = data.datum[0];
 
-      // Exact phrasing as requested: "Zora za", "Izlazak sunca za", "Podne za", "Ikindija za", "Akšam za", "Jacija za"
-      const targetPrefixes = [
-        "Zora za",
-        "Izlazak sunca za",
-        "Podne za",
-        "Ikindija za",
-        "Akšam za",
-        "Jacija za"
-      ];
       document.getElementById('notifExpTargetLabel').textContent = targetPrefixes[timing.nextIndex];
 
       // Big digits using the exact phone clock font ('Roboto' font-semibold, matching 15:04 status bar clock)
@@ -1722,23 +2239,24 @@
         : hmsString;
       document.getElementById('notifExpStandardDate').textContent = data.datum[1];
 
-      // Expanded View 2-Column x 3-Row Prayer Table (with "Izlazak sunca" and "Zora"!)
+      // Expanded View 2-Column x 3-Row Prayer Table (with "Izlazak sunca", "Zora", and "Džuma" on Friday!)
       const expGrid = document.getElementById('notifExpPrayerGrid');
-      const leftColIndices = [0, 2, 4]; // Zora/sabah, Podne, Akšam
+      const leftColIndices = [0, 2, 4]; // Zora, Podne/Džuma, Akšam
       const rightColIndices = [1, 3, 5]; // Izlazak sunca, Ikindija, Jacija
 
       const expPrayerLabels = [
         "Zora",
         "Izlazak sunca",
-        "Podne",
+        dhuhrLabel,
         "Ikindija",
         "Akšam",
         "Jacija"
       ];
 
       const renderExpCol = (indices) => indices.map(idx => {
-        const isTarget = (idx === timing.nextIndex);
-        const redClass = isTarget ? 'text-[#d81515] font-bold' : 'text-[#0c0c0c] font-bold';
+        const isTarget = (idx === timing.currentActiveIndex);
+        const normalColor = state.statusBarLight ? 'text-[#0c0c0c] font-bold' : 'text-white font-bold';
+        const redClass = isTarget ? 'text-[#ff3b30] font-bold' : normalColor;
         const tightSpacing = idx === 1 ? 'style="word-spacing: -2px; letter-spacing: -0.3px;"' : '';
         return `
           <div class="flex items-center justify-between gap-2 py-1 text-[14.5px] whitespace-nowrap">
@@ -1753,10 +2271,10 @@
         <div class="space-y-1">${renderExpCol(rightColIndices)}</div>
       `;
 
-      // 5b. Update Samsung Now Brief Pill: display ONLY when state.showNowBrief is ON and <= 60 minutes remain
+      // 5b. Update Samsung Now Brief Pill: display when state.showNowBrief is ON and (<= 60 minutes remain OR Test mode is ON)
       const nowBriefCard = document.getElementById('samsungNowBriefCard');
       if (nowBriefCard) {
-        const shouldDisplayNowBrief = state.showNowBrief && timing.minutesCeil <= 60 && timing.minutesCeil >= 1;
+        const shouldDisplayNowBrief = state.showNowBrief && ((timing.minutesCeil <= 60 && timing.minutesCeil >= 1) || state.test59Mode);
         nowBriefCard.classList.toggle('hidden', !shouldDisplayNowBrief);
         const minTextEl = document.getElementById('nowBriefMinutesText');
         if (minTextEl) {
@@ -1764,31 +2282,49 @@
           minTextEl.style.fontSize = '17.5px';
         }
         const statusTextEl = document.getElementById('nowBriefStatusText');
+        const hr = timing.now.getHours();
+        const dynamicBriefText = (hr >= 5 && hr < 12)
+          ? 'Morning brief'
+          : (hr >= 12 && hr < 17)
+            ? 'Afternoon brief'
+            : (hr >= 17 && hr < 21)
+              ? 'Evening is here'
+              : 'Evening brief';
         if (statusTextEl) {
-          statusTextEl.textContent = 'Evening is here';
+          statusTextEl.textContent = dynamicBriefText;
         }
         const pillEl = document.getElementById('samsungNowBriefPill');
         const circleEl = document.getElementById('nowBriefMinutesCircle');
-        if (pillEl && circleEl) {
-          if (state.isAodMode) {
-            // Always On Display (AOD): Pill background reverts to default Samsung Now Brief color; circle stays navy+gold but a bit dimmer
-            pillEl.style.background = 'linear-gradient(90deg, rgba(102, 130, 156, 0.90) 0%, rgba(128, 153, 151, 0.90) 52%, rgba(146, 161, 140, 0.90) 100%)';
-            pillEl.style.backdropFilter = 'blur(16px)';
-            pillEl.style.webkitBackdropFilter = 'blur(16px)';
-            circleEl.style.filter = 'brightness(0.72)';
+        if (pillEl && circleEl && statusTextEl) {
+          const useDarkScheme = state.isDarkAppTheme || !state.statusBarLight || state.isAodMode;
+          if (useDarkScheme) {
+            pillEl.style.background = 'rgba(42, 46, 52, 0.88)';
+            circleEl.style.background = 'rgba(255, 255, 255, 0.18)';
+            statusTextEl.style.color = '#ffffff';
           } else {
-            // Active Screen: Pill background matches the circle navy blue, a bit more blurry and transparent like the green was
-            pillEl.style.background = 'linear-gradient(90deg, rgba(5, 22, 50, 0.72) 0%, rgba(7, 26, 58, 0.64) 52%, rgba(2, 17, 42, 0.56) 100%)';
-            pillEl.style.backdropFilter = 'blur(24px)';
-            pillEl.style.webkitBackdropFilter = 'blur(24px)';
-            circleEl.style.filter = 'brightness(1)';
+            pillEl.style.background = 'rgba(255, 255, 255, 0.90)';
+            circleEl.style.background = '#3b424c';
+            statusTextEl.style.color = '#1c1e21';
           }
+          pillEl.style.backdropFilter = 'blur(20px)';
+          pillEl.style.webkitBackdropFilter = 'blur(20px)';
         }
       }
       const switchNowBriefEl = document.getElementById('switchSamsungNowBrief');
       if (switchNowBriefEl) {
         switchNowBriefEl.classList.toggle('on', state.showNowBrief);
         switchNowBriefEl.setAttribute('aria-checked', String(state.showNowBrief));
+      }
+      const switchTestEl = document.getElementById('switchTest59Mode');
+      if (switchTestEl) {
+        switchTestEl.classList.toggle('on', state.test59Mode);
+        switchTestEl.setAttribute('aria-checked', String(state.test59Mode));
+      }
+      const testSubEl = document.getElementById('test59SettingSub');
+      if (testSubEl) {
+        testSubEl.textContent = state.test59Mode
+          ? "Test uključen: odbrojava od 59 min do sljedećeg vakta."
+          : "Odbrojava 59 minuta do sljedećeg vakta (provjera boxa i Now brief-a).";
       }
       const nowBriefSubEl = document.getElementById('nowBriefSettingSub');
       if (nowBriefSubEl) {
@@ -1816,7 +2352,7 @@
         let diffMin = Math.round((timing.vakatSeconds[idx] - timing.nowSeconds) / 60);
         const relLabel = isNext ? countdownFormatted : formatRelativeBosnian(diffMin);
         const cfg = state.vakatConfigs[idx] || {};
-        const displayName = (idx === 2 && data.isFriday && state.separateDzuma)
+        const displayName = (idx === 2 && data.isFriday)
           ? "Džuma"
           : VAKAT_FULL_NAMES[idx];
 
@@ -2275,6 +2811,25 @@
             }
           } catch (e) {}
           showToast(state.showNowBrief ? "Pokaži u Now brief-u: UKLJUČENO" : "Pokaži u Now brief-u: ISKLJUČENO");
+          renderAll();
+        });
+      }
+
+      const rowTest59 = document.getElementById('rowTest59Mode') || document.getElementById('switchTest59Mode');
+      if (rowTest59) {
+        rowTest59.addEventListener('click', () => {
+          state.test59Mode = !state.test59Mode;
+          if (state.test59Mode) {
+            state.test59StartMs = Date.now();
+          }
+          try {
+            if (window.AndroidBridge && typeof window.AndroidBridge.onToggleTestMode === 'function') {
+              window.AndroidBridge.onToggleTestMode(state.test59Mode);
+            }
+          } catch (e) {}
+          showToast(state.test59Mode
+            ? "Test UKLJUČEN: odbrojavanje od 59 min pokrenuto!"
+            : "Test ISKLJUČEN: vraćeno na stvarno vrijeme.");
           renderAll();
         });
       }
